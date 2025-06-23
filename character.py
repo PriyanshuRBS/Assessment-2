@@ -49,15 +49,16 @@ class Enemy(Character):
     def fight(self, combat_item, player_health, dead_or_not):
         while self.health > 0 or player_health > 0:
             if combat_item is not None:
-                choice = input("""How hard would you like to hit? Heavy or light?
-                            remember that heavy reduces the durability twice as much as light, but is much stronger""")
+                choice = input("Heavy or light?")
                 if choice.lower == 'heavy':
                     combat_item.durability -= 10
                     self.health -= combat_item.damage
+                    print(f"You did {combat_item.damage} damage!")
                     print(f"{self.name} fights back!")
                 elif choice.lower == 'light':
                     combat_item.durability -= 5
                     self.health -= combat_item.damage / 2
+                    print(f"You did {combat_item.damage/2} damage!")
                     print(f"{self.name} fights back!")
             print(f"{self.name} hits you! -{self.hit_damage} health")
             player_health -= self.hit_damage
