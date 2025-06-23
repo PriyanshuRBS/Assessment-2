@@ -214,7 +214,7 @@ while dead == False:
 
             print("What will you fight with? You have:")
             for a in range(len(bag)):                       # show what’s in the bag
-                print(item.name)
+                print(a+1, item.name)
 
             choice = input("> ").strip()
 
