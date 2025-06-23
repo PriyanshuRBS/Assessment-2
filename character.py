@@ -49,13 +49,13 @@ class Enemy(Character):
     def fight(self, combat_item, player_health, dead_or_not):
         while self.health > 0 or player_health > 0:
             if combat_item is not None:
-                choice = input("Heavy or light?")
-                if choice.lower == 'heavy':
-                    combat_item.durability -= 10
+                choice = input("Strong or weak?")
+                if choice.lower == 'strong':
+                    combat_item.durability -= 15
                     self.health -= combat_item.damage
                     print(f"You did {combat_item.damage} damage!")
                     print(f"{self.name} fights back!")
-                elif choice.lower == 'light':
+                elif choice.lower == 'weak':
                     combat_item.durability -= 5
                     self.health -= combat_item.damage / 2
                     print(f"You did {combat_item.damage/2} damage!")
