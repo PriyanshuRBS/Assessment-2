@@ -98,15 +98,15 @@ attacker_2 = Enemy('An attacker','A criminal that wants all you have', 30, 5)
 old_man = Friend('An old man','An old man at the hut ready for your arrival')
 
 
-guard_1 = Enemy('Guard 1','A soldier guarding the entrance and hallway', 40)
+guard_1 = Enemy('Guard 1','A soldier guarding the entrance and hallway', 40, 10)
 
-soldier_strong = Enemy('The Massive Soldier', 'A strong soldier standing in the hallway')
+soldier_strong = Enemy('The Massive Soldier', 'A strong soldier standing in the hallway',50 , 20)
 
-soldier_1 = Enemy('Armory soldier 1','A soldier guarding the armory')
+soldier_1 = Enemy('Armory soldier 1','A soldier guarding the armory', 40, 10)
 
 cook = Friend('The cook','A familiar woman in the kitchen')
 
-king = Enemy('THE GREAT EVIL KING','The King who hides the recipe')
+king = Enemy('THE GREAT EVIL KING','The King who hides the recipe', 100, 20)
 
 soldier_2 = ('Dungeon guard 1','A soldier guarding the dungeon')
 
@@ -144,7 +144,7 @@ but one I think you will succeed in, for all of our futures.
 
 old_man.set_conversation("""
 Oh hello my friend! You must be the fine boy the village leader was talking about. I hope your journey so far has been safe.
-If you haven't taken it already, take this bread and water.
+If you haven't taken it already, take this bread and water, and a better sword. That wooden sword wont help you fight the king's men
 Good luck on your journey boy!""")
 
 guard_1.set_conversation("""
@@ -157,7 +157,9 @@ ANOTHER BOY WHO WANTS THE RECIPE?""")
 
 #creating items
 wooden_sword = Weapon('Wooden Sword', 'A simple blade to get the job done', 30, 10)
+iron_sword = Weapon('Iron Sword','A sharp sleek iron sword', 50, 20)
 town_hall.set_item(wooden_sword)
+hut.set_item(iron_sword)
 bread = Item('Bread','Food for thought, and health')
 water = Item('Water','Its just water')
 
