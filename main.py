@@ -213,7 +213,7 @@ while dead == False:
         if inhabitant and isinstance(inhabitant, Enemy):
 
             print("What will you fight with? You have:")
-            for a in range(len(bag)):                       # show what’s in the bag
+            for a in range(len(bag)-1):                       # show what’s in the bag
                 print(item.name)
 
             choice = input("> ").strip()
