@@ -215,21 +215,20 @@ while dead == False:
             print("What will you fight with? You have:")
             #print("Debug::: len(bag)" + len(bag))
             for a in range(len(bag)):                       # show what’s in the bag
-                print(bag[a-1])
+                print(bag[a-1].name)
 
             choice = input("> ").strip()
 
         # grab the *object* whose .name matches what the player typed
-            combat_item = next((it for it in bag if it.name == choice), None)
+            
 
-            if combat_item:
-                print(f"You brandish your {combat_item.name}!")
-            else:
-                print(f"You don't have a {choice}")
+            for b in range(len(bag)):
+                if choice == bag[b-1].name:
+                    print('You have that')
 
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
-            health, dead = inhabitant.fight(combat_item, health, dead)
+            health, dead = inhabitant.fight(, health, dead)
 
 
             
@@ -247,5 +246,5 @@ while dead == False:
     elif command.lower() == "take":
         if item is not None:
             print("You put the " + item.get_name() + " in your bag")
-            bag.append(item.name)
+            bag.append(item)
             current_room.set_item(None)
