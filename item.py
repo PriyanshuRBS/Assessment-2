@@ -23,7 +23,7 @@ class Item():
 class Weapon(Item):
 
     def __init__(self, name, description, durability, damage):
-        super.__init__(name, description)
+        super().__init__(name, description)
         self.durability = durability
         self.damage = damage
 
