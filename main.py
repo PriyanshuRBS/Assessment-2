@@ -225,8 +225,8 @@ while dead == False:
             for b in range(len(bag)):
                 if choice == bag[b-1].name:
                     print('You have that')
-                    choice == bag[b-1]
-                    print(choice.name)
+                    print(bag[b-1])
+                    
 
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
