@@ -213,8 +213,9 @@ while dead == False:
         if inhabitant and isinstance(inhabitant, Enemy):
 
             print("What will you fight with? You have:")
-            for a in range(len(bag)-1):                       # show what’s in the bag
-                print(item.name)
+            #print("Debug::: len(bag)" + len(bag))
+            for a in range(len(bag)):                       # show what’s in the bag
+                print(a.name)
 
             choice = input("> ").strip()
 
@@ -246,5 +247,5 @@ while dead == False:
     elif command.lower() == "take":
         if item is not None:
             print("You put the " + item.get_name() + " in your bag")
-            bag.append(item.get_name())
+            bag.append(item)
             current_room.set_item(None)
