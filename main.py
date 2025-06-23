@@ -2,7 +2,7 @@ from room import Room
 from character import Character, Friend, Enemy
 from item import Item
 
-
+#testing
 
 
 #creating the different rooms
