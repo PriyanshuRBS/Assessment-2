@@ -247,5 +247,5 @@ while dead == False:
     elif command.lower() == "take":
         if item is not None:
             print("You put the " + item.get_name() + " in your bag")
-            bag.append(item)
+            bag.append(item.name)
             current_room.set_item(None)
