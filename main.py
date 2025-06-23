@@ -90,15 +90,15 @@ road_2.link_room(old_tunnel, 'southwest')
 village_leader = Friend('Village Leader','The leader, who awaits your arrival')
 
 
-attacker_1 = Enemy('An Attacker','A wild man with a knife')
+attacker_1 = Enemy('An Attacker','A wild man with a knife', 20, 5)
 
-attacker_2 = Enemy('An attacker','A criminal that wants all you have')
+attacker_2 = Enemy('An attacker','A criminal that wants all you have', 30, 5)
 
 
 old_man = Friend('An old man','An old man at the hut ready for your arrival')
 
 
-guard_1 = Enemy('Guard 1','A soldier guarding the entrance and hallway')
+guard_1 = Enemy('Guard 1','A soldier guarding the entrance and hallway', 40)
 
 soldier_strong = Enemy('The Massive Soldier', 'A strong soldier standing in the hallway')
 
