@@ -210,20 +210,28 @@ while dead == False:
 
             
     elif command.lower() == "fight":
-        if inhabitant is not None and isinstance(inhabitant, Enemy):
-            # Fight with the inhabitant, if there is one
-            print(f"What will you fight with? You have:")
-            if len(bag) > 0:
-                for i in range(len(bag)):
-                    print(bag[i])
-            fight_with = input()
+        if inhabitant and isinstance(inhabitant, Enemy):
 
-            if fight_with in bag:
-                print(f'You have that')  
+            print("What will you fight with? You have:")
+            for item in bag:                       # show what’s in the bag
+                print(item.name)
+
+            choice = input("> ").strip()
+
+        # grab the *object* whose .name matches what the player typed
+            combat_item = next((it for it in bag if it.name == choice), None)
+
+            if combat_item:
+                print(f"You brandish your {combat_item.name}!")
             else:
-                print("you don't have a "+fight_with)
+                print(f"You don't have a {choice}")
 
-            inhabitant.fight(fight_with, health, dead)
+        # ---------- FIGHT ----------
+        # fight returns the *updated* health & dead flag
+            health, dead = inhabitant.fight(combat_item, health, dead)
+
+
+            
                 
         else:
             print("There is no one here to fight with")

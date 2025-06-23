@@ -46,27 +46,43 @@ class Enemy(Character):
     def steal(self):
         print('You steal from'+self.name)
 
-    def fight(self, combat_item, player_health, dead_or_not):
-        while self.health > 0 or player_health > 0:
-            if combat_item is not None:
-                choice = input("Strong or weak?")
-                if choice.lower == 'strong':
+    def fight(self, combat_item, player_health: int, dead_flag: bool):
+
+        while self.health > 0 and player_health > 0:
+            # ---------- PLAYER TURN ----------
+            if combat_item: # if the player has a weapon
+                choice = input("Strong or weak? ").strip().lower()
+
+                if choice == "strong":
                     combat_item.durability -= 15
-                    self.health -= combat_item.damage
-                    print(f"You did {combat_item.damage} damage!")
-                    print(f"{self.name} fights back!")
-                elif choice.lower == 'weak':
+                    dmg = combat_item.damage
+                elif choice == "weak":
                     combat_item.durability -= 5
-                    self.health -= combat_item.damage / 2
-                    print(f"You did {combat_item.damage/2} damage!")
-                    print(f"{self.name} fights back!")
-            print(f"{self.name} hits you! -{self.hit_damage} health")
-            player_health -= self.hit_damage
-        if self.health <= 0:
-            print(f"{self.name} is dead, you win!")
-        elif player_health <= 0:
-            print(f"Scurry home, you lost the fight to {self.name}")
-            dead_or_not = True
+                    dmg = combat_item.damage // 2   # integer division → whole dmg so we dont need to deal with decimals
+                else:
+                    print("You hesitate!")
+                    dmg = 0
+
+                self.health = max(0, self.health - dmg)
+                print(f"You dealt {dmg} damage. {self.name} now has "
+                      f"{self.health} HP.")
+
+            # Enemy defeated?
+            if self.health == 0:
+                print(f"{self.name} is dead – you win!")
+                return player_health, dead_flag
+
+            # ---------- ENEMY TURN ----------
+            print(f"{self.name} hits you! -{self.hit_damage} HP")
+            player_health = max(0, player_health - self.hit_damage)
+
+            if player_health == 0:
+                print(f"You lost the fight to {self.name}.")
+                dead_flag = True
+                return player_health, dead_flag
+
+        # Shouldn’t get here, but just in case:
+        return player_health, dead_flag
             
 
             
