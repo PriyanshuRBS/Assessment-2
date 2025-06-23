@@ -1,6 +1,6 @@
 from room import Room
 from character import Character, Friend, Enemy
-from item import Item
+from item import Item, Weapon
 
 #testing
 
@@ -156,7 +156,7 @@ ANOTHER BOY WHO WANTS THE RECIPE?""")
 
 
 #creating items
-wooden_sword = Item('Wooden Sword', 'A simple blade to get the job done')
+wooden_sword = Weapon('Wooden Sword', 'A simple blade to get the job done', 30, 10)
 town_hall.set_item(wooden_sword)
 bread = Item('Bread','Food for thought, and health')
 water = Item('Water','Its just water')
@@ -174,6 +174,7 @@ attacker_1.weakness = wooden_sword.name
 #where the game runs
 current_room = home
 possibleDirections = ['north','south','east','west']
+health = 100
 bag = []
 dead = False
 
@@ -183,17 +184,29 @@ while dead == False:
     current_room.get_details()
     inhabitant = current_room.get_character()
     item = current_room.get_item()
+
     if inhabitant is not None:
         inhabitant.describe()
+
     if item is not None:
         item.describe()
+
     command = input('> ')
+
     if command.lower() in possibleDirections:
         current_room = current_room.move(command.lower())
+        if health > 100 and health > 95:
+            health += 100 - health
+        elif health > 100 and health < 95:
+            health += 5
+            
     elif command.lower() == 'talk':
         #talking to the inhabitant, if there is one
+
         if inhabitant is not None:
             inhabitant.talk()
+
+            
     elif command.lower() == "fight":
         if inhabitant is not None and isinstance(inhabitant, Enemy):
             # Fight with the inhabitant, if there is one
@@ -202,20 +215,14 @@ while dead == False:
                 for i in range(len(bag)):
                     print(bag[i])
             fight_with = input()
+
             if fight_with in bag:
                 print(f'You have that')  
             else:
                 print("you don't have a "+fight_with)
-            if inhabitant.fight(fight_with) == True:
-                # What happens if you win?
-                if Enemy.enemies_to_defeat == 0:
-                    print("Congratulations, you have survived another adventure")
-                    dead = True
-                print("Bravo,hero you won the fight!")
-                current_room.set_character(None)
-            else:
-                print("Scurry home, you lost the fight.")
-                dead = True
+
+            inhabitant.fight(fight_with, health, dead)
+                
         else:
             print("There is no one here to fight with")
     elif command.lower() == 'pat':

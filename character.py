@@ -35,19 +35,41 @@ class Character():
 
 class Enemy(Character):
     enemies_to_defeat = 0
-    def __init__(self, char_name, char_description):
+    def __init__(self, char_name, char_description, health, hit_damage):
         super().__init__(char_name, char_description)
         self.weakness = None 
         self.enemies_to_defeat = Enemy.enemies_to_defeat + 1
+        self.health = health
+        self.hit_damage = hit_damage
 
 
     def steal(self):
         print('You steal from'+self.name)
 
-    def fight(self, combat_item):
-        if combat_item == self.weakness:
-            Enemy.enemies_to_defeat -= 1
-            return True
+    def fight(self, combat_item, player_health, dead_or_not):
+        while self.health > 0 or player_health > 0:
+            if combat_item is not None:
+                choice = input("""How hard would you like to hit? Heavy or light?
+                            remember that heavy reduces the durability twice as much as light, but is much stronger""")
+                if choice.lower == 'heavy':
+                    combat_item.durability -= 10
+                    self.health -= combat_item.damage
+                    print(f"{self.name} fights back!")
+                elif choice.lower == 'light':
+                    combat_item.durability -= 5
+                    self.health -= combat_item.damage / 2
+                    print(f"{self.name} fights back!")
+            print(f"{self.name} hits you! -{self.hit_damage} health")
+            player_health -= self.hit_damage
+        if self.health <= 0:
+            print(f"{self.name} is dead, you win!")
+        elif player_health <= 0:
+            print(f"Scurry home, you lost the fight to {self.name}")
+            dead_or_not = True
+            
+
+            
+        
 
 class Friend(Character):
     def __init__(self, char_name, char_description):
