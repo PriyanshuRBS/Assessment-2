@@ -51,12 +51,13 @@ class Enemy(Character):
         while self.health > 0 and player_health > 0:
             # ---------- PLAYER TURN ----------
             if combat_item: # if the player has a weapon
+                print(' ')
                 choice = input("Strong or weak? ").strip().lower()
 
-                if choice == "strong":
+                if choice.lower() == "strong":
                     combat_item.durability -= 15
                     dmg = combat_item.damage
-                elif choice == "weak":
+                elif choice.lower() == "weak":
                     combat_item.durability -= 5
                     dmg = combat_item.damage // 2   # integer division → whole dmg so we dont need to deal with decimals
                 else:
@@ -64,7 +65,7 @@ class Enemy(Character):
                     dmg = 0
 
                 self.health = max(0, self.health - dmg)
-                print(f"You dealt {dmg} damage. {self.name} now has "
+                print(f"You did {dmg} damage. {self.name} now has "
                       f"{self.health} HP.")
 
             # Enemy defeated?

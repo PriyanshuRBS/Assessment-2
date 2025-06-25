@@ -41,6 +41,8 @@ dungeon.set_description('The recipe lies here')
 
 old_tunnel = Room('An Old Tunnel')
 old_tunnel.set_description('Some secret passage with light at the end')
+# a room where dead characters are stored
+storage = Room('Storage')
 
 
 
@@ -144,7 +146,7 @@ but one I think you will succeed in, for all of our futures.
 
 old_man.set_conversation("""
 Oh hello my friend! You must be the fine boy the village leader was talking about. I hope your journey so far has been safe.
-If you haven't taken it already, take this bread and water, and a better sword. That wooden sword wont help you fight the king's men
+If you haven't taken it already, take this better iron sword. That wooden sword you had before wont help you fight the king's men
 Good luck on your journey boy!""")
 
 guard_1.set_conversation("""
@@ -157,11 +159,10 @@ ANOTHER BOY WHO WANTS THE RECIPE?""")
 
 #creating items
 wooden_sword = Weapon('Wooden Sword', 'A simple blade to get the job done', 30, 10)
-iron_sword = Weapon('Iron Sword','A sharp sleek iron sword', 50, 20)
 town_hall.set_item(wooden_sword)
+
+iron_sword = Weapon('Iron Sword','A sharp sleek iron sword', 50, 20)
 hut.set_item(iron_sword)
-bread = Item('Bread','Food for thought, and health')
-water = Item('Water','Its just water')
 
 
 
@@ -174,6 +175,7 @@ attacker_1.weakness = wooden_sword.name
 
 
 #where the game runs
+print("Welcome to:")
 current_room = home
 possibleDirections = ['north','south','east','west']
 health = 100
@@ -225,12 +227,17 @@ while dead == False:
             for b in range(len(bag)):
                 if choice == bag[b-1].name:
                     print('You have that')
-                    choice == bag[b-1]
-                    print(choice.name)
+                    choice = bag[b-1]
+                    print(f"You are using - {choice.name}")
 
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
             health, dead = inhabitant.fight(choice, health, dead)
+            if dead == False:
+                current_room.set_character(None)
+            if choice.durability_check() == True:
+                bag.remove(choice)
+                print(f"{choice.name} has broken! you no longer have it")
 
 
             
