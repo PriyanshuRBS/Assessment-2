@@ -1,6 +1,7 @@
 from room import Room
 from character import Character, Friend, Enemy
-from item import Item, Weapon
+from item import Item, Weapon, Food
+import time
 
 #testing
 
@@ -87,16 +88,15 @@ road_2.link_room(old_tunnel, 'southwest')
 
 
 #creating characters
-village_leader = Friend('Village Leader','The leader, who awaits your arrival')
+village_leader = Friend('Village Leader','The leader of the village, with a brief on yout mission')
 
 
-attacker_1 = Enemy('An Attacker','A wild man with a knife', 20, 5)
+attacker_1 = Enemy('An Attacker',"He's a wild man with a sharp knife", 20, 5)
 
-attacker_2 = Enemy('An attacker','A criminal that wants all you have', 30, 5)
+attacker_2 = Enemy('An attacker',"He's A criminal that wants all you have", 30, 5)
 
 
 old_man = Friend('An old man','An old man at the hut ready for your arrival')
-
 
 guard_1 = Enemy('Guard 1','A soldier guarding the entrance and hallway', 40, 10)
 
@@ -106,7 +106,7 @@ soldier_1 = Enemy('Armory soldier 1','A soldier guarding the armory', 40, 10)
 
 cook = Friend('The cook','A familiar woman in the kitchen')
 
-king = Enemy('THE GREAT EVIL KING','The King who hides the recipe', 100, 20)
+king = Enemy('THE GREAT EVIL KING','The King who hides the recipe', 300, 20)
 
 soldier_2 = ('Dungeon guard 1','A soldier guarding the dungeon')
 
@@ -140,16 +140,14 @@ but one I think you will succeed in, for all of our futures.
     I have a spy in the King's castle, who tells me that the recipe is stored in the dungeon.
 
     On the path you will follow there will be a hut, where a close friend of mine will take care of you for a night.
-     Remember that on the path there are wild men and criminals. If you havent already take the wooden sword. Good luck, and be careful """)
+     Remember that on the path there are wild men and criminals. If you havent already take the wooden sword. Good luck, and be careful """,15)
 
 old_man.set_conversation("""
 Oh hello my friend! You must be the fine boy the village leader was talking about. I hope your journey so far has been safe.
 If you haven't taken it already, take this bread and water, and a better sword. That wooden sword wont help you fight the king's men
-Good luck on your journey boy!""")
+Good luck on your journey boy!""",15)
 
-guard_1.set_conversation("""
-WHO ARE YOU?
-ANOTHER BOY WHO WANTS THE RECIPE?""")
+
 
 
 
@@ -157,11 +155,13 @@ ANOTHER BOY WHO WANTS THE RECIPE?""")
 
 #creating items
 wooden_sword = Weapon('Wooden Sword', 'A simple blade to get the job done', 30, 10)
-iron_sword = Weapon('Iron Sword','A sharp sleek iron sword', 50, 20)
 town_hall.set_item(wooden_sword)
+iron_sword = Weapon('Iron Sword','A sharp sleek iron sword', 60, 20)
 hut.set_item(iron_sword)
-bread = Item('Bread','Food for thought, and health')
-water = Item('Water','Its just water')
+enchanted_sword = Weapon('Enchanted Sword', 'A heavenly blade with immense power', 100, 30)
+zoogar_berry = Food('Zoogar Berry', 'A quick special food to heal up',100)
+kitchen.set_item(zoogar_berry)
+
 
 
 
@@ -175,38 +175,65 @@ attacker_1.weakness = wooden_sword.name
 
 #where the game runs
 current_room = home
-possibleDirections = ['north','south','east','west']
+possibleDirections = ['north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest']
 health = 100
 bag = []
 dead = False
+hastalked = False
+eaten_food = None
+food_found = False
 
 while dead == False:
     print('\n')
     current_room.describe()
+    time.sleep(0.1)
     current_room.get_details()
     inhabitant = current_room.get_character()
     item = current_room.get_item()
+    last_rooms = []
+    time.sleep(0.1)
 
     if inhabitant is not None:
         inhabitant.describe()
+        time.sleep(0.1)
 
     if item is not None:
         item.describe()
+        time.sleep(0.1)
 
     command = input('> ')
+    time.sleep(0.1)
 
     if command.lower() in possibleDirections:
-        current_room = current_room.move(command.lower())
-        if health > 100 and health > 95:
-            health += 100 - health
-        elif health > 100 and health < 95:
-            health += 5
+        if inhabitant and isinstance(inhabitant, Enemy):
+            print("")
+            print("You cannot move until the enemy is defeated")
+            time.sleep(1)
+        elif  isinstance(inhabitant, Friend) and inhabitant.conversation != None and hastalked == False:
+            print("")
+            print(f"You must talk to {inhabitant.name} first!")
+            time.sleep(1)
+        elif current_room.move(command.lower()) == old_tunnel and dungeon not in last_rooms:
+            print("You cannot go there")
+        elif current_room.move(command.lower()) == great_hall and armory not in last_rooms and kitchen not in last_rooms:
+            print("Visit the other rooms first before going ")
+        else:
+            last_rooms.append(current_room)
+            current_room = current_room.move(command.lower())
+            hastalked = False
+            if health > 100 and health > 95:
+                health += 100 - health
+            elif health > 100 and health < 95:
+                health += 5
             
     elif command.lower() == 'talk':
         #talking to the inhabitant, if there is one
 
         if inhabitant is not None:
             inhabitant.talk()
+            hastalked = True
+            print(hastalked)
+            
 
             
     elif command.lower() == "fight":
@@ -216,6 +243,7 @@ while dead == False:
             #print("Debug::: len(bag)" + len(bag))
             for a in range(len(bag)):                       # show what’s in the bag
                 print(bag[a-1].name)
+                time.sleep(0.5)
 
             choice = input("> ").strip()
 
@@ -225,18 +253,18 @@ while dead == False:
             for b in range(len(bag)):
                 if choice == bag[b-1].name:
                     print('You have that')
-                    print(bag[b-1])
+                    choice = bag[b-1]
+                    time.sleep(0.2)
+                    break
                     
 
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
-            health, dead = inhabitant.fight(choice, health, dead)
+            health, dead, bag = inhabitant.fight(choice, health, dead, current_room, bag)
 
-
-            
-                
         else:
             print("There is no one here to fight with")
+            time.sleep(1)
     elif command.lower() == 'pat':
         if inhabitant is not None:
             if isinstance(inhabitant, Enemy):
@@ -248,5 +276,27 @@ while dead == False:
     elif command.lower() == "take":
         if item is not None:
             print("You put the " + item.get_name() + " in your bag")
+            time.sleep(1)
             bag.append(item)
             current_room.set_item(None)
+
+    elif command.lower() == "eat":
+        for c in range(len(bag)):
+            if isinstance(bag[c-1], Food):
+                eaten_food = bag[c-1]
+                print(f'You eat {eaten_food.name}')
+                health += eaten_food.healing
+                if health > 100:
+                    health = 100
+                elif eaten_food.name == 'Zoogar Berry':
+                    health = 200
+                food_found = True
+            if food_found == True:
+                break
+        if food_found == False:
+            print('There is no food to eat')
+            
+    else:
+        print("""OOPS! 
+              Semms you have entered an invalid command, try agian.""")
+        time.sleep(0.3)

@@ -32,7 +32,11 @@ class Weapon(Item):
             return True
         else:
             return False
+        
+class Food(Item):
 
-    
+    def __init__(self, name, description, healing):
+        super().__init__(name, description)
+        self.healing = healing
 
         
