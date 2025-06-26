@@ -1,6 +1,6 @@
 import time
 #the banner function
-def banner(text):
+def banner_generator(text):
     #creating spacing between the letters
     bannertext = ' '.join(text.upper())
     #creating the pattern for the upper and lower line. There will be stars on the corners and lines between then

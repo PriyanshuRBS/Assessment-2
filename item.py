@@ -28,7 +28,7 @@ class Weapon(Item):
         self.damage = damage
 
     def durability_check(self):
-        if self.durability >= 0:
+        if self.durability <= 0:
             return True
         else:
             return False

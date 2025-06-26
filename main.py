@@ -42,6 +42,8 @@ dungeon.set_description('The recipe lies here')
 
 old_tunnel = Room('An Old Tunnel')
 old_tunnel.set_description('Some secret passage with light at the end')
+# a room where dead characters are stored
+storage = Room('Storage')
 
 
 
@@ -151,7 +153,7 @@ Good luck on your journey boy!""",15)
 
 
 
-
+#
 
 #creating items
 wooden_sword = Weapon('Wooden Sword', 'A simple blade to get the job done', 30, 10)
@@ -174,6 +176,7 @@ attacker_1.weakness = wooden_sword.name
 
 
 #where the game runs
+print("Welcome to:")
 current_room = home
 possibleDirections = ['north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest']
 health = 100
