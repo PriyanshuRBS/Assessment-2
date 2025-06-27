@@ -1,9 +1,9 @@
 from room import Room
 from character import Character, Friend, Enemy
 from item import Item, Weapon, Food
+from banner import banner_generator
+from timespacer import time_text, time_text_spacer
 import time
-
-#testing
 
 
 #creating the different rooms
@@ -146,7 +146,7 @@ but one I think you will succeed in, for all of our futures.
 
 old_man.set_conversation("""
 Oh hello my friend! You must be the fine boy the village leader was talking about. I hope your journey so far has been safe.
-If you haven't taken it already, take this bread and water, and a better sword. That wooden sword wont help you fight the king's men
+If you haven't taken it already, take this better sword. That wooden sword wont help you fight the king's men
 Good luck on your journey boy!""",15)
 
 
@@ -164,31 +164,89 @@ enchanted_sword = Weapon('Enchanted Sword', 'A heavenly blade with immense power
 zoogar_berry = Food('Zoogar Berry', 'A quick special food to heal up',100)
 kitchen.set_item(zoogar_berry)
 
-
-
-
-
-
-#creating weaknesses
-attacker_1.weakness = wooden_sword.name
-
-
-
-
 #where the game runs
-print("Welcome to:")
+
 current_room = home
 possibleDirections = ['north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest']
+health_max = 100
 health = 100
+heal_rate = 5
 bag = []
 dead = False
 hastalked = False
 eaten_food = None
 food_found = False
+stength = 5
+
+time_text_spacer("Hello!",1.5)
+time_text_spacer("welcome to...", 1.5)
+time_text_spacer("THE ADVENTURE GAME",2)
+time_text('Before starting,',1)
+time_text_spacer('There are some important things you need to learn',2)
+time_text('First of all,',1.5)
+time_text('To move around roooms', 1)
+time_text_spacer('You will need to enter the direction you want to go in',3)
+time_text_spacer('look at the following example - ',2)
+
+time_text_spacer("""
+Welcome to:
+home
+Your home
+Town Hall is west
+> """, 4)
+time_text_spacer("In this example you must enter [west] to move to the next place. look below and see how to enter", 5)
+time_text_spacer("""
+Welcome to:
+home
+Your home
+Town Hall is west
+>  west""", 4)
+
+time_text("Next, to pick up items", 2)
+time_text_spacer("simply enter [take] in the command line, the same place as where you put the direction. Do it as shown below", 5)
+time_text_spacer("""
+Welcome to:
+The home is east
+The Road 1 is west
+Village Leader is here!
+The leader of the village, with a brief on yout mission
+the [Wooden Sword] is here - A simple blade to get the job done
+> take""", 3)
+time_text_spacer("This also applies for comannds such as [fight], [pat], [eat] and [talk]",5)
+print('')
+time_text_spacer("Now let's choose your skill", 3)
+time_text_spacer("Do you want ", 2)
+time_text_spacer("Fast healing - You have 150 HP and heal faster (healing happens as you move through rooms)",4)
+time_text_spacer("Increased Strength - You have 95 HP but do more damage to the enemies",4)
+time_text("Enter [Fast Healing] or [Increased Strength]",3)
+skill = input(">")
+if skill.lower() == 'fast healing':
+    health = 150
+    health_max = 150
+    heal_rate = 10
+    strength = 10
+elif skill.lower() == 'increased strength':
+    health = 95
+    health_max = 95
+    heal_rate = 5
+    strength = 15
+else:
+    time_text('You have no skill since you did not give a valid input!',4)
+    health = 100
+    health_max = 100
+    heal_rate = 5
+    strength = 5
+time_text_spacer(f"You have {health}HP, {heal_rate}HP healing rate and {strength} strength", 4)
+time_text("Entering the game.", 0.5)
+time_text("Entering the game..", 0.5)
+time_text_spacer("Entering the game...", 0.5)
+time_text_spacer('You begin in your room...', 2)
+
 
 while dead == False:
     print('\n')
     current_room.describe()
+    print("Welcome to:")
     time.sleep(0.1)
     current_room.get_details()
     inhabitant = current_room.get_character()
@@ -224,10 +282,10 @@ while dead == False:
             last_rooms.append(current_room)
             current_room = current_room.move(command.lower())
             hastalked = False
-            if health > 100 and health > 95:
-                health += 100 - health
-            elif health > 100 and health < 95:
-                health += 5
+            if health < 100 and health > 100-heal_rate:
+                health += health_max - health
+            elif health < 100 and health < 100-heal_rate:
+                health += heal_rate
             
     elif command.lower() == 'talk':
         #talking to the inhabitant, if there is one
@@ -263,7 +321,7 @@ while dead == False:
 
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
-            health, dead, bag = inhabitant.fight(choice, health, dead, current_room, bag)
+            health, dead, bag = inhabitant.fight(choice, health, dead, current_room, bag, strength)
 
         else:
             print("There is no one here to fight with")

@@ -51,7 +51,7 @@ class Enemy(Character):
     def steal(self):
         print('You steal from'+self.name)
 
-    def fight(self, combat_item=object, player_health=int, dead_flag=bool, current_room=object, bag=list):
+    def fight(self, combat_item=object, player_health=int, dead_flag=bool, current_room=object, bag=list, strength=int):
 
         while self.health > 0 and player_health > 0:
             # ---------- PLAYER TURN ----------
@@ -62,10 +62,10 @@ class Enemy(Character):
 
                 if choice.lower() == "strong":
                     combat_item.durability -= 15
-                    dmg = combat_item.damage
+                    dmg = combat_item.damage + strength
                 elif choice.lower() == "weak":
                     combat_item.durability -= 5
-                    dmg = combat_item.damage // 2   # integer division → whole dmg so we dont need to deal with decimals
+                    dmg = (combat_item.damage // 2) + strength   # integer division → whole dmg so we dont need to deal with decimals
                 else:
                     print("You hesitate!")
                     time.sleep(0.5)
