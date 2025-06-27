@@ -1,7 +1,7 @@
 from room import Room
 from character import Character, Friend, Enemy
 from item import Item, Weapon, Food
-from banner import banner_generator
+from banner import banner_generator, banner_generator_v2
 from timespacer import time_text, time_text_spacer
 import time
 
@@ -135,7 +135,7 @@ dungeon.set_character(soldier_2)
 
 #setting speeches for the characters
 village_leader.set_conversation("""
-Hello there young warrior. I have chosen you to complete a mission, a daring a difficult one,
+Hello there young warrior. I have chosen you to complete a mission, a daring and difficult one,
 but one I think you will succeed in, for all of our futures.
 
    Our village needs you to take back the Great Curry Recipe that has been rightfully ours, from The Great Evil King.
@@ -163,6 +163,9 @@ hut.set_item(iron_sword)
 enchanted_sword = Weapon('Enchanted Sword', 'A heavenly blade with immense power', 100, 30)
 zoogar_berry = Food('Zoogar Berry', 'A quick special food to heal up',100)
 kitchen.set_item(zoogar_berry)
+curry_recipe = Item('Curry Recipe', "The village's Curry recipe")
+dungeon.set_item(curry_recipe)
+fist = Weapon('Your fist', 'your fist', 10000000, 10)
 
 #where the game runs
 
@@ -245,9 +248,8 @@ time_text_spacer('You begin in your room...', 2)
 
 while dead == False:
     print('\n')
+    time_text("welcome to: ", 0.2)
     current_room.describe()
-    print("Welcome to:")
-    time.sleep(0.1)
     current_room.get_details()
     inhabitant = current_room.get_character()
     item = current_room.get_item()
@@ -294,38 +296,40 @@ while dead == False:
             inhabitant.talk()
             hastalked = True
             print(hastalked)
-            
-
-            
+                      
     elif command.lower() == "fight":
         if inhabitant and isinstance(inhabitant, Enemy):
+            if inhabitant.conversation is not None:
+                if hastalked == False:
+                    print(f'You must talk to {inhabitant.name} first')
+            else:
+                print("What will you fight with? You have:")
+                #print("Debug::: len(bag)" + len(bag))
+                for a in range(len(bag)):                       # show what’s in the bag
+                    print(bag[a-1].name)
+                    time.sleep(0.5)
 
-            print("What will you fight with? You have:")
-            #print("Debug::: len(bag)" + len(bag))
-            for a in range(len(bag)):                       # show what’s in the bag
-                print(bag[a-1].name)
-                time.sleep(0.5)
-
-            choice = input("> ").strip()
-
-        # grab the *object* whose .name matches what the player typed
-            
-
-            for b in range(len(bag)):
-                if choice == bag[b-1].name:
-                    print('You have that')
-                    choice = bag[b-1]
-                    time.sleep(0.2)
-                    break
-                    
-
+                choice = input("> ").strip()
+                # grab the *object* whose .name matches what the player typed
+                for b in range(len(bag)):
+                    if choice == bag[b-1].name:
+                        print('You have that')
+                        choice = bag[b-1]
+                        time.sleep(0.2)
+                        break
+                if isinstance(choice, Weapon):
+                    print('')
+                else:
+                    print('Seems you may not have selected a valid option, you just get your fists to fight')
+                    choice = fist
+                                  
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
-            health, dead, bag = inhabitant.fight(choice, health, dead, current_room, bag, strength)
-
+                health, dead, bag = inhabitant.fight(choice, health, dead, current_room, bag, strength)
         else:
             print("There is no one here to fight with")
             time.sleep(1)
+
     elif command.lower() == 'pat':
         if inhabitant is not None:
             if isinstance(inhabitant, Enemy):
@@ -350,7 +354,8 @@ while dead == False:
                 if health > 100:
                     health = 100
                 elif eaten_food.name == 'Zoogar Berry':
-                    health = 200
+                    health_max += 50
+                    health = health_max
                 food_found = True
             if food_found == True:
                 break
@@ -361,3 +366,17 @@ while dead == False:
         print("""OOPS! 
               Semms you have entered an invalid command, try agian.""")
         time.sleep(0.3)
+
+    if curry_recipe in bag:
+        old_man.set_conversation("""You have found the curry recipe! Our village will be proud.
+                                    You must have also found the Zoogar Berry I assume, the spy, my daughter, kept it safe for you. """)
+        village_leader.set_conversation("""You Have Succeeded!
+                                            The recipe i think should stay with you, since you are the one who saved it
+                                                And i announce you my heir.
+                                        Now go home,you have had a tiring journey.""")
+
+    if current_room == home and dungeon in last_rooms:
+        time.sleep(2)
+        banner_generator_v2('The')
+        banner_generator_v2('End')
+        break
