@@ -6,7 +6,7 @@ class Character():
         self.name = char_name
         self.description = char_description
         self.conversation = None
-        
+        self.combat_item = None
         
     # Describe this character
     
@@ -51,21 +51,35 @@ class Enemy(Character):
     def steal(self):
         print('You steal from'+self.name)
 
-    def fight(self, combat_item=object, player_health=int, dead_flag=bool, current_room=object, bag=list, strength=int):
+    def fight(self, player_health=int, dead_flag=bool, current_room=object, bag=list, strength=int):
+
+        print('What Will you fight with? you have: ')
+        for b in range(len(bag)):
+            print(bag[b-1].name)
+        choice = input('>')
+        for c in range(len(bag)):
+            if choice == bag[b-1].name:
+                self.combat_item = bag[b-1]
+                print(f'You have chosen {self.combat_item.name}')
+                break
+            else:
+                print('Thats not in the bag!')
+                break
+
 
         while self.health > 0 and player_health > 0:
             # ---------- PLAYER TURN ----------
-            if combat_item: # if the player has a weapon
+            if self.combat_item: # if the player has a weapon
                 print(' ')
                 choice = input("Strong or weak? ").strip().lower()
                 time.sleep(0.1)
 
                 if choice.lower() == "strong":
-                    combat_item.durability -= 15
-                    dmg = combat_item.damage + strength
+                    self.combat_item.durability -= 15
+                    dmg = self.combat_item.damage + strength
                 elif choice.lower() == "weak":
-                    combat_item.durability -= 5
-                    dmg = (combat_item.damage // 2) + strength   # integer division → whole dmg so we dont need to deal with decimals
+                    self.combat_item.durability -= 5
+                    dmg = (self.combat_item.damage // 2) + strength   # integer division → whole dmg so we dont need to deal with decimals
                 else:
                     print("You hesitate!")
                     time.sleep(0.5)
@@ -75,9 +89,12 @@ class Enemy(Character):
                 print(f"You did {dmg} damage. {self.name} now has "
                       f"{self.health} HP.")
                 time.sleep(1)
-                if combat_item.durability_check() == True:
-                    print(f"{combat_item.name} has broken!")
-                    bag.remove(combat_item)
+                if self.combat_item.durability_check() == True:
+                    print(f"{self.combat_item.name} has broken!")
+                    if self.combat_item in bag:
+                        bag.remove(self.combat_item)
+                    else:
+                        print('If we got here there is an error')
 
 
             # Enemy defeated?

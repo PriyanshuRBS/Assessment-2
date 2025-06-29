@@ -4,6 +4,7 @@ from item import Item, Weapon, Food
 from banner import banner_generator, banner_generator_v2
 from timespacer import time_text, time_text_spacer
 import time
+from help import help
 
 
 #creating the different rooms
@@ -185,43 +186,13 @@ time_text_spacer("Hello!",1.5)
 time_text_spacer("welcome to...", 1.5)
 time_text_spacer("THE ADVENTURE GAME",2)
 time_text('Before starting,',1)
-time_text_spacer('There are some important things you need to learn',2)
-time_text('First of all,',1.5)
-time_text('To move around roooms', 1)
-time_text_spacer('You will need to enter the direction you want to go in',3)
-time_text_spacer('look at the following example - ',2)
 
-time_text_spacer("""
-Welcome to:
-home
-Your home
-Town Hall is west
-> """, 4)
-time_text_spacer("In this example you must enter [west] to move to the next place. look below and see how to enter", 5)
-time_text_spacer("""
-Welcome to:
-home
-Your home
-Town Hall is west
->  west""", 4)
+help()
 
-time_text("Next, to pick up items", 2)
-time_text_spacer("simply enter [take] in the command line, the same place as where you put the direction. Do it as shown below", 5)
-time_text_spacer("""
-Welcome to:
-The home is east
-The Road 1 is west
-Village Leader is here!
-The leader of the village, with a brief on yout mission
-the [Wooden Sword] is here - A simple blade to get the job done
-> take""", 3)
-time_text_spacer("This also applies for comannds such as [fight], [pat], [eat] and [talk]",5)
-print('')
-time_text_spacer("Now let's choose your skill", 3)
-time_text_spacer("Do you want ", 2)
-time_text_spacer("Fast healing - You have 150 HP and heal faster (healing happens as you move through rooms)",4)
-time_text_spacer("Increased Strength - You have 95 HP but do more damage to the enemies",4)
-time_text("Enter [Fast Healing] or [Increased Strength]",3)
+time_text_spacer("Now let's descide your skills", 2)
+time_text('Fast healing - More health, more healing, less damage', 3)
+time_text('Increased Strength - Less health, less healing, double damage', 3)
+
 skill = input(">")
 if skill.lower() == 'fast healing':
     health = 150
@@ -303,29 +274,28 @@ while dead == False:
                 if hastalked == False:
                     print(f'You must talk to {inhabitant.name} first')
             else:
-                print("What will you fight with? You have:")
-                #print("Debug::: len(bag)" + len(bag))
-                for a in range(len(bag)):                       # show what’s in the bag
-                    print(bag[a-1].name)
-                    time.sleep(0.5)
+ #               print("What will you fight with? You have:")
+  #              for a in range(len(bag)):                       # show what’s in the bag
+   #                 print(bag[a-1].name)
+    #                time.sleep(0.5)
 
-                choice = input("> ").strip()
-                # grab the *object* whose .name matches what the player typed
-                for b in range(len(bag)):
-                    if choice == bag[b-1].name:
-                        print('You have that')
-                        choice = bag[b-1]
-                        time.sleep(0.2)
-                        break
-                if isinstance(choice, Weapon):
-                    print('')
-                else:
-                    print('Seems you may not have selected a valid option, you just get your fists to fight')
-                    choice = fist
+     #           choice = input("> ").strip()
+      #          # grab the *object* whose .name matches what the player typed
+       #         for b in range(len(bag)):
+        #            if choice == bag[b-1].name:
+         #               print('You have that')
+          #              choice = bag[b-1]
+           #             time.sleep(0.2)
+            #            break
+             #   if isinstance(choice, Weapon):
+              #      print('')
+               # else:
+                #    print('Seems you may not have selected a valid option, you just get your fists to fight')
+                 #   choice = fist
                                   
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
-                health, dead, bag = inhabitant.fight(choice, health, dead, current_room, bag, strength)
+                health, dead, bag = inhabitant.fight(health, dead, current_room, bag, strength)
         else:
             print("There is no one here to fight with")
             time.sleep(1)
@@ -344,6 +314,7 @@ while dead == False:
             time.sleep(1)
             bag.append(item)
             current_room.set_item(None)
+            print(bag)
 
     elif command.lower() == "eat":
         for c in range(len(bag)):
@@ -362,6 +333,8 @@ while dead == False:
         if food_found == False:
             print('There is no food to eat')
             
+    elif command == help:
+        help()
     else:
         print("""OOPS! 
               Semms you have entered an invalid command, try agian.""")
