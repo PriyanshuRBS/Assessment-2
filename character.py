@@ -51,7 +51,7 @@ class Enemy(Character):
     def steal(self):
         print('You steal from'+self.name)
 
-    def fight(self, player_health=int, dead_flag=bool, current_room=object, bag=list, strength=int):
+    def fight(self, player_health=int, dead_flag=bool, current_room=object, bag=list, strength=int, fist=object):
 
         print('What Will you fight with? you have: ')
         for b in range(len(bag)):
@@ -63,7 +63,9 @@ class Enemy(Character):
                 print(f'You have chosen {self.combat_item.name}')
                 break
             else:
-                print('Thats not in the bag!')
+                print('Thats not in the bag! You will use your fists!')
+                self.combat_item = fist
+                
                 break
 
 

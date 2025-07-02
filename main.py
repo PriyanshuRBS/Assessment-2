@@ -101,17 +101,19 @@ attacker_2 = Enemy('An attacker',"He's A criminal that wants all you have", 30, 
 
 old_man = Friend('An old man','An old man at the hut ready for your arrival')
 
-guard_1 = Enemy('Guard 1','A soldier guarding the entrance and hallway', 40, 10)
+guard_1 = Enemy('Guard','A soldier guarding the entrance and hallway', 40, 10)
 
-soldier_strong = Enemy('The Massive Soldier', 'A strong soldier standing in the hallway',50 , 20)
+soldier_strong = Enemy('The Massive Soldier', 'A super soldier standing in the hallway',50 , 20)
 
-soldier_1 = Enemy('Armory soldier 1','A soldier guarding the armory', 40, 10)
+soldier_1 = Enemy('Armory soldier',"He is a big soldier guarding the armory", 40, 10)
 
-cook = Friend('The cook','A familiar woman in the kitchen')
+cook = Friend('The cook',"She's the spy")
 
-king = Enemy('THE GREAT EVIL KING','The King who hides the recipe', 300, 20)
+king = Enemy('THE GREAT EVIL KING','HE"S THE EVIL KING! The one who stole the recipe!', 300, 20)
 
-soldier_2 = ('Dungeon guard 1','A soldier guarding the dungeon')
+soldier_2 = Enemy('Dungeon guard',"He's a super soldier like the one before",50, 20)
+
+apparition = Enemy('Apparition', 'Some weird apparition in the tunnel that seems like it wantd to hurt you', 5, 1)
 
 
 
@@ -130,6 +132,7 @@ armory.set_character(soldier_1)
 kitchen.set_character(cook)
 great_hall.set_character(king)
 dungeon.set_character(soldier_2)
+old_tunnel.set_character(apparition)
 
 
 
@@ -150,10 +153,8 @@ Oh hello my friend! You must be the fine boy the village leader was talking abou
 If you haven't taken it already, take this better sword. That wooden sword wont help you fight the king's men
 Good luck on your journey boy!""",15)
 
-
-
-
-
+cook.set_conversation("""
+Hello boy. Im the spy. If you havent already take the Enchanted Sword from the armory and eat the Zoogar Berry""", 10)
 #
 
 #creating items
@@ -162,6 +163,7 @@ town_hall.set_item(wooden_sword)
 iron_sword = Weapon('Iron Sword','A sharp sleek iron sword', 60, 20)
 hut.set_item(iron_sword)
 enchanted_sword = Weapon('Enchanted Sword', 'A heavenly blade with immense power', 100, 30)
+armory.set_item(enchanted_sword)
 zoogar_berry = Food('Zoogar Berry', 'A quick special food to heal up',100)
 kitchen.set_item(zoogar_berry)
 curry_recipe = Item('Curry Recipe', "The village's Curry recipe")
@@ -184,7 +186,7 @@ stength = 5
 
 time_text_spacer("Hello!",1.5)
 time_text_spacer("welcome to...", 1.5)
-time_text_spacer("THE ADVENTURE GAME",2)
+banner_generator_v2('THE ADVENTURE GAME')           
 time_text('Before starting,',1)
 
 help()
@@ -249,8 +251,10 @@ while dead == False:
             time.sleep(1)
         elif current_room.move(command.lower()) == old_tunnel and dungeon not in last_rooms:
             print("You cannot go there")
-        elif current_room.move(command.lower()) == great_hall and armory not in last_rooms and kitchen not in last_rooms:
-            print("Visit the other rooms first before going ")
+        elif current_room.move(command.lower()) == great_hall:
+            if kitchen not in last_rooms and armory not in last_rooms:
+                print('Visit the kitchen and armory before you go to the hall')
+
         else:
             last_rooms.append(current_room)
             current_room = current_room.move(command.lower())
@@ -295,7 +299,7 @@ while dead == False:
                                   
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
-                health, dead, bag = inhabitant.fight(health, dead, current_room, bag, strength)
+                health, dead, bag = inhabitant.fight(health, dead, current_room, bag, strength, fist)
         else:
             print("There is no one here to fight with")
             time.sleep(1)
