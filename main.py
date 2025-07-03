@@ -12,34 +12,34 @@ home = Room('home')
 home.set_description('Your home')
 
 town_hall = Room('Town Hall')
-town_hall.set_description('The administrative building, the place to report.')
+town_hall.set_description('A place in the centre of the village, lively with people')
 
 road_1 = Room('Road 1')
 road_1.set_description('The rough road between the village and the hut')
 
 hut = Room('A Hut')
-hut.set_description('A place to rest through the night?')
+hut.set_description('A small wooden hut dimly lit by a candle')
 
 road_2 = Room('Road 2')
 road_2.set_description('The paved road between the hut and the castle')
 
 entrance = Room('The Entrance')
-entrance.set_description('The grand entrance to the castle')
+entrance.set_description('The grand entrance to the castle, with diamond, gold and silver')
 
 hallway = Room('The Hallway')
-hallway.set_description('A hallway between rooms')
+hallway.set_description('A beautiful hallway, walls made of marble and lined with diamonds and emeralds, a sight to see')
 
 armory = Room('The Armory')
-armory.set_description('A storage place of weapons')
+armory.set_description('A room made to store weapons, but its almost empty?')
 
 kitchen = Room('The Kitchen')
-kitchen.set_description('A place for food, and something more?')
+kitchen.set_description('A kitchen with a marble table, a window with a gold frame')
 
 great_hall = Room('The Great Hall')
-great_hall.set_description('Where the king waits')
+great_hall.set_description('A very large hall with shiny marble, gold, flowing lava from the walls, glowing gold, shiny silver, and platinum')
 
 dungeon = Room('The Dungeon')
-dungeon.set_description('The recipe lies here')
+dungeon.set_description('An old dusty cave, with prisons and a box half open')
 
 old_tunnel = Room('An Old Tunnel')
 old_tunnel.set_description('Some secret passage with light at the end')
@@ -91,10 +91,10 @@ road_2.link_room(old_tunnel, 'southwest')
 
 
 #creating characters
-village_leader = Friend('Village Leader','The leader of the village, with a brief on yout mission')
+village_leader = Friend('Village Leader',"He's the leader of the village, running things and giving people tasks")
 
 
-attacker_1 = Enemy('An Attacker',"He's a wild man with a sharp knife", 20, 5)
+attacker_1 = Enemy('An Attacker',"He's a wild man with a sharp knife, maybe some random person", 20, 5)
 
 attacker_2 = Enemy('An attacker',"He's A criminal that wants all you have", 30, 5)
 
@@ -156,17 +156,17 @@ Good luck on your journey boy!""",15)
 cook.set_conversation("""
 Hello boy. Im the spy. If you havent already take the Enchanted Sword from the armory and eat the Zoogar Berry""", 10)
 #
-
+ 
 #creating items
-wooden_sword = Weapon('Wooden Sword', 'A simple blade to get the job done', 30, 10)
+wooden_sword = Weapon('Wooden Sword', "It's a weak little blade, but it gets the job done!", 30, 10)
 town_hall.set_item(wooden_sword)
-iron_sword = Weapon('Iron Sword','A sharp sleek iron sword', 60, 20)
+iron_sword = Weapon('Iron Sword',"A sleek shiny blade that does its job very well", 60, 20)
 hut.set_item(iron_sword)
-enchanted_sword = Weapon('Enchanted Sword', 'A heavenly blade with immense power', 100, 30)
+enchanted_sword = Weapon('Enchanted Sword', 'The heavenly blade, blessed by divine power, with extreme power', 100, 40)
 armory.set_item(enchanted_sword)
-zoogar_berry = Food('Zoogar Berry', 'A quick special food to heal up',100)
+zoogar_berry = Food('Zoogar Berry', "It's a magical berry that gives you alot of health",100)
 kitchen.set_item(zoogar_berry)
-curry_recipe = Item('Curry Recipe', "The village's Curry recipe")
+curry_recipe = Item('Curry Recipe', "The Curry Recipe, a peice of paper plated with gold, with glowing words")
 dungeon.set_item(curry_recipe)
 fist = Weapon('Your fist', 'your fist', 10000000, 10)
 
@@ -186,7 +186,12 @@ stength = 5
 
 time_text_spacer("Hello!",1.5)
 time_text_spacer("welcome to...", 1.5)
-banner_generator_v2('THE ADVENTURE GAME')           
+banner_generator_v2('THE') 
+time.sleep(1)        
+banner_generator('CURRY')  
+time.sleep(1)
+banner_generator_v2('GAME')
+time.sleep(2)
 time_text('Before starting,',1)
 
 help()
@@ -195,7 +200,7 @@ time_text_spacer("Now let's descide your skills", 2)
 time_text('Fast healing - More health, more healing, less damage', 3)
 time_text('Increased Strength - Less health, less healing, double damage', 3)
 
-skill = input(">")
+skill = input(" What's Your Command? >")
 if skill.lower() == 'fast healing':
     health = 150
     health_max = 150
@@ -237,7 +242,7 @@ while dead == False:
         item.describe()
         time.sleep(0.1)
 
-    command = input('> ')
+    command = input("What's your command? >")
     time.sleep(0.1)
 
     if command.lower() in possibleDirections:
@@ -266,11 +271,10 @@ while dead == False:
             
     elif command.lower() == 'talk':
         #talking to the inhabitant, if there is one
-
+        hastalked = True
         if inhabitant is not None:
             inhabitant.talk()
-            hastalked = True
-            print(hastalked)
+            
                       
     elif command.lower() == "fight":
         if inhabitant and isinstance(inhabitant, Enemy):
@@ -301,8 +305,7 @@ while dead == False:
         # fight returns the *updated* health & dead flag
                 health, dead, bag = inhabitant.fight(health, dead, current_room, bag, strength, fist)
         else:
-            print("There is no one here to fight with")
-            time.sleep(1)
+            time_text('There is no one here to fight with', 2)
 
     elif command.lower() == 'pat':
         if inhabitant is not None:
