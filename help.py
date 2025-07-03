@@ -38,3 +38,4 @@ What's your command? > take""", 3)
     time_text("When you will fight, you will get the option to do a strong attack or weak attack",4)
     time_text("Remember this - A strong attack gives double the attack power,",4)
     time_text_spacer(' but reduces the durability by 3 times as much as a weak attack',3)
+    

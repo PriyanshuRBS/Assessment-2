@@ -107,7 +107,7 @@ soldier_strong = Enemy('The Massive Soldier', 'A super soldier standing in the h
 
 soldier_1 = Enemy('Armory soldier',"He is a big soldier guarding the armory", 40, 10)
 
-cook = Friend('The cook',"She's the spy")
+cook = Friend('The cook',"She's the spy the village leader talked about")
 
 king = Enemy('THE GREAT EVIL KING','HE"S THE EVIL KING! The one who stole the recipe!', 300, 20)
 
@@ -168,7 +168,7 @@ zoogar_berry = Food('Zoogar Berry', "It's a magical berry that gives you alot of
 kitchen.set_item(zoogar_berry)
 curry_recipe = Item('Curry Recipe', "The Curry Recipe, a peice of paper plated with gold, with glowing words")
 dungeon.set_item(curry_recipe)
-fist = Weapon('Your fist', 'your fist', 10000000, 10)
+fist = Weapon('Your fist', 'your fist', 10000000, 2)
 
 #where the game runs
 
@@ -257,17 +257,26 @@ while dead == False:
         elif current_room.move(command.lower()) == old_tunnel and dungeon not in last_rooms:
             print("You cannot go there")
         elif current_room.move(command.lower()) == great_hall:
-            if kitchen not in last_rooms and armory not in last_rooms:
-                print('Visit the kitchen and armory before you go to the hall')
-
+            if kitchen in last_rooms and armory in last_rooms:
+                great_hall_key = True
         else:
-            last_rooms.append(current_room)
-            current_room = current_room.move(command.lower())
-            hastalked = False
-            if health < 100 and health > 100-heal_rate:
-                health += health_max - health
-            elif health < 100 and health < 100-heal_rate:
-                health += heal_rate
+            if current_room == hallway:
+                if great_hall_key == True:
+                    last_rooms.append(current_room)
+                    current_room = current_room.move(command.lower())
+                    hastalked = False
+                    if health < 100 and health > 100-heal_rate:
+                        health += health_max - health
+                    elif health < 100 and health < 100-heal_rate:
+                        health += heal_rate
+                else:
+                    time_text("Go to the hallway first", 2)
+            else:
+                if current_room == hallway:
+                    if great_hall_key == True:
+                        last_rooms.append(current_room)
+                        current_room = current_room.move(command.lower())
+                        hastalked = False
             
     elif command.lower() == 'talk':
         #talking to the inhabitant, if there is one
@@ -282,24 +291,7 @@ while dead == False:
                 if hastalked == False:
                     print(f'You must talk to {inhabitant.name} first')
             else:
- #               print("What will you fight with? You have:")
-  #              for a in range(len(bag)):                       # show what’s in the bag
-   #                 print(bag[a-1].name)
-    #                time.sleep(0.5)
 
-     #           choice = input("> ").strip()
-      #          # grab the *object* whose .name matches what the player typed
-       #         for b in range(len(bag)):
-        #            if choice == bag[b-1].name:
-         #               print('You have that')
-          #              choice = bag[b-1]
-           #             time.sleep(0.2)
-            #            break
-             #   if isinstance(choice, Weapon):
-              #      print('')
-               # else:
-                #    print('Seems you may not have selected a valid option, you just get your fists to fight')
-                 #   choice = fist
                                   
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
@@ -321,7 +313,7 @@ while dead == False:
             time.sleep(1)
             bag.append(item)
             current_room.set_item(None)
-            print(bag)
+
 
     elif command.lower() == "eat":
         for c in range(len(bag)):

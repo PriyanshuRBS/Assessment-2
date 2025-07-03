@@ -52,24 +52,22 @@ class Enemy(Character):
         print('You steal from'+self.name)
 
     def fight(self, player_health=int, dead_flag=bool, current_room=object, bag=list, strength=int, fist=object):
-
-        print('What Will you fight with? you have: ')
-        for b in range(len(bag)):
-            print(bag[b-1].name)
-        choice = input('>')
-        for c in range(len(bag)):
-            if choice == bag[b-1].name:
-                self.combat_item = bag[b-1]
-                print(f'You have chosen {self.combat_item.name}')
-                break
-            else:
-                print('Thats not in the bag! You will use your fists!')
-                self.combat_item = fist
-                
-                break
-
-
         while self.health > 0 and player_health > 0:
+
+            print('What Will you fight with? you have: ')
+            for b in range(len(bag)):
+                print(bag[b-1].name)
+            choice = input('>')
+            for c in range(len(bag)):
+                if choice == bag[b-1].name:
+                    self.combat_item = bag[b-1]
+                    print(f'You have chosen {self.combat_item.name}')
+                    break
+                else:
+                    print('Thats not in the bag! You will use your fists!')
+                    self.combat_item = fist
+                    break
+
             # ---------- PLAYER TURN ----------
             if self.combat_item: # if the player has a weapon
                 print(' ')
