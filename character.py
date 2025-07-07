@@ -1,5 +1,7 @@
 import time
+from item import Item, Food, Weapon
 from banner import banner_generator
+import random
 
 class Character():
     def __init__(self, char_name, char_description):
@@ -59,9 +61,15 @@ class Enemy(Character):
                 print(bag[b-1].name)
             choice = input('>')
             for c in range(len(bag)):
-                if choice == bag[b-1].name:
+                if choice == None:
+                    print('You have chosen nothing! you will use your fists!')
+                    self.combat_item = fist
+                elif choice == bag[b-1].name:
                     self.combat_item = bag[b-1]
                     print(f'You have chosen {self.combat_item.name}')
+                    if isinstance(self.combat_item, Food):
+                        print('You cannot fight with food, you will use your fists!')
+                        self.combat_item = fist
                     break
                 else:
                     print('Thats not in the bag! You will use your fists!')
@@ -75,8 +83,14 @@ class Enemy(Character):
                 time.sleep(0.1)
 
                 if choice.lower() == "strong":
-                    self.combat_item.durability -= 15
-                    dmg = self.combat_item.damage + strength
+                    chance = random.randint(1,3)
+                    if chance == 1:
+                        print('You did a critical hit!')
+                        self.combat_item.durability -= 15
+                        dmg = self.combat_item.damage + strength + 5
+                    else:
+                        self.combat_item.durability -= 15
+                        dmg = self.combat_item.damage + strength 
                 elif choice.lower() == "weak":
                     self.combat_item.durability -= 5
                     dmg = (self.combat_item.damage // 2) + strength   # integer division → whole dmg so we dont need to deal with decimals
@@ -106,8 +120,12 @@ class Enemy(Character):
                 return player_health, dead_flag, bag
 
             # ---------- ENEMY TURN ----------
-            print(f"{self.name} hits you! -{self.hit_damage} HP")
-            player_health -= self.hit_damage
+            chance = random.randint(1,3)
+            if chance == 1:
+                print('You dodged the attack! You took no damage!')
+            else:
+                print(f"{self.name} hits you! -{self.hit_damage} HP")
+                player_health -= self.hit_damage
             print(f"You have {player_health} HP")
             time.sleep(1)
 
@@ -119,7 +137,7 @@ class Enemy(Character):
                 return player_health, dead_flag, bag
 
         # Shouldn’t get here, but just in case:
-        return player_health, dead_flag, bag
+        return player_health, dead_flag, bag                               
             
 
             

@@ -154,7 +154,9 @@ If you haven't taken it already, take this better sword. That wooden sword wont 
 Good luck on your journey boy!""",15)
 
 cook.set_conversation("""
-Hello boy. Im the spy. If you havent already take the Enchanted Sword from the armory and eat the Zoogar Berry""", 10)
+Hello boy. Im the spy you were informed about. In the Great Hall is the King, and in the dungeon is the recipe. 
+    If you havent already take the Enchanted Sword from the armory, take it, 
+        And if you havent already eaten the Zoogar Berry here, eat it""", 10)
 #
  
 #creating items
@@ -173,7 +175,7 @@ fist = Weapon('Your fist', 'your fist', 10000000, 2)
 #where the game runs
 
 current_room = home
-possibleDirections = ['north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest']
+possible_directions = ['north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest']
 health_max = 100
 health = 100
 heal_rate = 5
@@ -183,6 +185,10 @@ hastalked = False
 eaten_food = None
 food_found = False
 stength = 5
+kitchen_key = False
+armory_key = False
+completion_key = False
+
 
 time_text_spacer("Hello!",1.5)
 time_text_spacer("welcome to...", 1.5)
@@ -217,7 +223,7 @@ else:
     health_max = 100
     heal_rate = 5
     strength = 5
-time_text_spacer(f"You have {health}HP, {heal_rate}HP healing rate and {strength} strength", 4)
+time_text_spacer(f"You have {health}HP, {heal_rate}HP healing rate and {strength} strength", 2)
 time_text("Entering the game.", 0.5)
 time_text("Entering the game..", 0.5)
 time_text_spacer("Entering the game...", 0.5)
@@ -245,39 +251,37 @@ while dead == False:
     command = input("What's your command? >")
     time.sleep(0.1)
 
-    if command.lower() in possibleDirections:
+    if current_room == dungeon:
+        completion_key = True 
+    
+    if current_room == kitchen:
+        kitchen_key = True
+
+    if current_room == armory:
+        armory_key = True 
+
+    if command.lower() in possible_directions:
         if inhabitant and isinstance(inhabitant, Enemy):
             print("")
             print("You cannot move until the enemy is defeated")
             time.sleep(1)
         elif  isinstance(inhabitant, Friend) and inhabitant.conversation != None and hastalked == False:
-            print("")
-            print(f"You must talk to {inhabitant.name} first!")
-            time.sleep(1)
-        elif current_room.move(command.lower()) == old_tunnel and dungeon not in last_rooms:
+            time_text(f'You must talk to {inhabitant.name} first!',1)
+        elif current_room.move(command.lower()) == old_tunnel and completion_key == False:
             print("You cannot go there")
         elif current_room.move(command.lower()) == great_hall:
-            if kitchen in last_rooms and armory in last_rooms:
-                great_hall_key = True
+            if kitchen_key == False or armory_key == False:
+                print('Visit the Kitchen and armory first before entering the great hall')
+
         else:
-            if current_room == hallway:
-                if great_hall_key == True:
-                    last_rooms.append(current_room)
-                    current_room = current_room.move(command.lower())
-                    hastalked = False
-                    if health < 100 and health > 100-heal_rate:
-                        health += health_max - health
-                    elif health < 100 and health < 100-heal_rate:
-                        health += heal_rate
-                else:
-                    time_text("Go to the hallway first", 2)
-            else:
-                if current_room == hallway:
-                    if great_hall_key == True:
-                        last_rooms.append(current_room)
-                        current_room = current_room.move(command.lower())
-                        hastalked = False
-            
+            last_rooms.append(current_room)
+            current_room = current_room.move(command.lower())
+            hastalked = False
+            if health < health_max and health > health_max-heal_rate:
+                health += health_max - health
+            elif health < 100 and health < 100-heal_rate:
+                health += heal_rate
+
     elif command.lower() == 'talk':
         #talking to the inhabitant, if there is one
         hastalked = True
@@ -299,21 +303,14 @@ while dead == False:
         else:
             time_text('There is no one here to fight with', 2)
 
-    elif command.lower() == 'pat':
-        if inhabitant is not None:
-            if isinstance(inhabitant, Enemy):
-                print("I wouldn't do that if I were you...")
-            else:
-                inhabitant.pat()
-        else:
-            print("There is no one here to pat :(")
-    elif command.lower() == "take":
+    elif command == 'take':
         if item is not None:
-            print("You put the " + item.get_name() + " in your bag")
-            time.sleep(1)
             bag.append(item)
-            current_room.set_item(None)
+            print(f'You put {item.name}')
+            current_room.item = None
 
+        else:
+            print('There is no item to take')
 
     elif command.lower() == "eat":
         for c in range(len(bag)):
@@ -332,7 +329,7 @@ while dead == False:
         if food_found == False:
             print('There is no food to eat')
             
-    elif command == help:
+    elif command == 'help':
         help()
     else:
         print("""OOPS! 
@@ -345,10 +342,9 @@ while dead == False:
         village_leader.set_conversation("""You Have Succeeded!
                                             The recipe i think should stay with you, since you are the one who saved it
                                                 And i announce you my heir.
-                                        Now go home,you have had a tiring journey.""")
+                                        Now go home, you have had a tiring journey.""")
 
-    if current_room == home and dungeon in last_rooms:
-        time.sleep(2)
+    if current_room == home and completion_key == True:
         banner_generator_v2('The')
         banner_generator_v2('End')
         break
