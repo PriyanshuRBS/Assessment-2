@@ -40,7 +40,7 @@ class Room():
     def get_details(self):
         for direction in self.linked_rooms:
             room = self.linked_rooms[direction]
-            print("The "+ room.get_name()+ " is " + direction)
+            print("The "+ room.get_name()+ " is " + direction + '. Enter ['+ direction + '] to go there')
     
     
     #link the rooms in an order

@@ -19,17 +19,15 @@ class Character():
         
     # Set what this character will say when talked to
     
-    def set_conversation(self, conversation, duration):
+    def set_conversation(self, conversation):
         self.conversation = conversation
-        self.duration = duration
         
         
     # Talk to this character
     
     def talk(self):
         if self.conversation is not None:
-            print("[" + self.name + " says]: " + self.conversation)
-            time.sleep(self.duration)
+            input("[" + self.name + " says]: " + self.conversation + "    press [enter] when you are done reading")
         else:
             print(self.name + " doesn't want to talk to you")
     
@@ -49,29 +47,30 @@ class Enemy(Character):
         self.health = health
         self.hit_damage = hit_damage
 
-
-    def steal(self):
-        print('You steal from'+self.name)
-
-    def fight(self, player_health=int, dead_flag=bool, current_room=object, bag=list, strength=int, fist=object):
+    #fight system with enemies
+    #bringing in values needed
+    def fight(self, player_health, dead_flag, current_room, bag, strength, fist):
+    #loop where the fight happens
         while self.health > 0 and player_health > 0:
-
+            #selecting the weapon form the inventory
             print('What Will you fight with? you have: ')
             for b in range(len(bag)):
-                print(bag[b-1].name)
+                if isinstance(bag[b-1], Weapon):
+                    print(bag[b-1].name)
             choice = input('>')
-            for c in range(len(bag)):
-                if choice == None:
-                    print('You have chosen nothing! you will use your fists!')
-                    self.combat_item = fist
-                elif choice == bag[b-1].name:
+            for i in range(len(bag)):
+                #checking the input
+                if choice == bag[b-1].name:
                     self.combat_item = bag[b-1]
+
                     print(f'You have chosen {self.combat_item.name}')
+                    #checking if the selected item is a weapon, just in case
                     if isinstance(self.combat_item, Food):
                         print('You cannot fight with food, you will use your fists!')
                         self.combat_item = fist
                     break
                 else:
+                    #if player gives an invalid or no input, the fists are assigned as the weapon
                     print('Thats not in the bag! You will use your fists!')
                     self.combat_item = fist
                     break
@@ -79,19 +78,19 @@ class Enemy(Character):
             # ---------- PLAYER TURN ----------
             if self.combat_item: # if the player has a weapon
                 print(' ')
-                choice = input("Strong or weak? ").strip().lower()
+                choice = input("Strong [s]  or  weak [w] > ").strip().lower()
                 time.sleep(0.1)
 
-                if choice.lower() == "strong":
+                if choice.lower() == "s":
                     chance = random.randint(1,3)
                     if chance == 1:
                         print('You did a critical hit!')
                         self.combat_item.durability -= 15
-                        dmg = self.combat_item.damage + strength + 5
+                        dmg = self.combat_item.damage + strength + strength/2
                     else:
                         self.combat_item.durability -= 15
                         dmg = self.combat_item.damage + strength 
-                elif choice.lower() == "weak":
+                elif choice.lower() == "w":
                     self.combat_item.durability -= 5
                     dmg = (self.combat_item.damage // 2) + strength   # integer division → whole dmg so we dont need to deal with decimals
                 else:
@@ -147,9 +146,8 @@ class Friend(Character):
     def __init__(self, char_name, char_description):
         super().__init__(char_name, char_description)
         self.feeling = None
-    def pat(self):
-        print(self.name + " pats you back!")
-    # What other methods could your Friend class have?
+
     
+
 
 

@@ -18,7 +18,7 @@ class Item():
         self.description = new_description
 
     def describe(self):
-        print(f"the ["+self.name+"] is here - "+self.description)
+        print(f"the {self.name} is here - {self.description}. enter [take] to take this item")
 
 class Weapon(Item):
 
