@@ -48,7 +48,7 @@ storage = Room('Storage')
 
 
 #creating items
-sandwich = Food('A sandwich', 'a snack from your mother to take with you on your trip',30)
+sandwich = Food('Sandwich', 'a snack from your mother to take with you on your trip',30)
 
 wooden_sword = Weapon('Wooden Sword', "It's a weak little blade, but it gets the job done!", 30, 10)
 
@@ -285,34 +285,48 @@ while dead == False:
 
     command = input("What's your command? > ")
     time.sleep(0.1)
-    
-    if current_room == kitchen:
-        kitchen_key = True
-
-    if current_room == armory:
-        armory_key = True 
 
     if command.lower() in possible_directions:
         if inhabitant and isinstance(inhabitant, Enemy):
             print("")
             print("You cannot move until the enemy is defeated")
             time.sleep(1)
-        elif  isinstance(inhabitant, Friend) and inhabitant.conversation != None and hastalked == False:
-            time_text(f'You must talk to {inhabitant.name} first!',1)
+        elif isinstance(inhabitant, Friend) and inhabitant.conversation is not None and hastalked == False:
+            time_text(f'You must talk to {inhabitant.name} first!', 1)
         elif current_room.move(command.lower()) == old_tunnel and completion_key == False:
             print("You cannot go there yet, that place is for later")
         elif current_room.move(command.lower()) == great_hall:
             if kitchen_key == False or armory_key == False:
                 print('Visit the Kitchen and armory first before entering the great hall')
+            else:
+                last_rooms.append(current_room)
+                current_room = current_room.move(command.lower())
+                # Give keys after moving
+                if current_room == kitchen:
+                    kitchen_key = True
+                if current_room == armory:
+                    armory_key = True
 
+                hastalked = False
+                if health < health_max and health > health_max - heal_rate:
+                    health = health_max
+                elif health < health_max and health < health_max - heal_rate:
+                    health += heal_rate
         else:
             last_rooms.append(current_room)
             current_room = current_room.move(command.lower())
+            # Give keys after moving
+            if current_room == kitchen:
+                kitchen_key = True
+            if current_room == armory:
+                armory_key = True
+
             hastalked = False
-            if health < health_max and health > health_max-heal_rate:
-                health += health_max - health
-            elif health < 100 and health < 100-heal_rate:
+            if health < health_max and health > health_max - heal_rate:
+                health = health_max
+            elif health < health_max and health < health_max - heal_rate:
                 health += heal_rate
+
 
     elif command.lower() == 'talk':
         #talking to the inhabitant, if there is one
@@ -327,8 +341,7 @@ while dead == False:
                 if hastalked == False:
                     print(f'You must talk to {inhabitant.name} first')
             else:
-
-                                  
+                print('loading fight')                        
         # ---------- FIGHT ----------
         # fight returns the *updated* health & dead flag
                 health, dead, bag = inhabitant.fight(health, dead, current_room, bag, strength, fist)
@@ -345,30 +358,44 @@ while dead == False:
             print('There is no item to take')
 
     elif command.lower() == "eat":
-        for c in range(len(bag)):
-            if isinstance(bag[c-1], Food):
-                print(bag[c-1].name)
-        food_choice = input('Which food would you like to eat?')
-        for d in range(len(bag)):
-            if bag[d-1].name.lower() == food_choice.lower():
-                food_choice = bag[d-1]
+        print('You have:')
+        food_items = []
+        for item in bag:
+            if isinstance(item, Food):
+                print(item.name)
+                food_items.append(item)
+        food_choice_name = input('Which food would you like to eat? ')
+        # Try to find a matching food
+        food_choice = None
+        for item in food_items:
+            if item.name.lower() == food_choice_name.lower():
+                food_choice = item
                 break
-        if type(food_choice) != object:
-            time_text('That is not a food')
-            
+        if food_choice is None:
+            print('That is not a food.')
         elif food_choice == zoogar_berry:
+            print('You eat the Zoogar Berry')
             if health_max < 100:
                 health_max += zoogar_berry.healing
             else:
                 health_max = 195
             health = health_max
         else:
-            health += food_choice.healing
-        
+            time_text(f'You eat the {food_choice.name}', 1)
+            if health < (health_max - food_choice.healing):
+                health += food_choice.healing
+            else: health= health_max
+            bag.remove(food_choice)
 
             
     elif command == 'help':
         help()
+
+    elif command == 'inventory':
+        print("In your bag you have: ")
+        for e in range(len(bag)):
+            print(bag[e-1].name)
+        print('')
     else:
         print("""OOPS! 
               Semms you have entered an invalid command, try agian.""")

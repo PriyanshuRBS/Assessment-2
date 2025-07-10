@@ -50,30 +50,31 @@ class Enemy(Character):
     #fight system with enemies
     #bringing in values needed
     def fight(self, player_health, dead_flag, current_room, bag, strength, fist):
-    #loop where the fight happens
         while self.health > 0 and player_health > 0:
-            #selecting the weapon form the inventory
-            print('What Will you fight with? you have: ')
-            for b in range(len(bag)):
-                if isinstance(bag[b-1], Weapon):
-                    print(bag[b-1].name)
-            choice = input('>')
-            for i in range(len(bag)):
-                #checking the input
-                if choice == bag[b-1].name:
-                    self.combat_item = bag[b-1]
+            print('What will you fight with? You have: ')
+            weapon_items = []
+            for item in bag:
+                if isinstance(item, Weapon):
+                    print(item.name)
+                    weapon_items.append(item)
 
-                    print(f'You have chosen {self.combat_item.name}')
-                    #checking if the selected item is a weapon, just in case
-                    if isinstance(self.combat_item, Food):
-                        print('You cannot fight with food, you will use your fists!')
-                        self.combat_item = fist
+            choice = input('> ')
+
+            selected_weapon = None
+            for weapon in weapon_items:
+                if weapon.name.lower() == choice.lower():
+                    selected_weapon = weapon
                     break
-                else:
-                    #if player gives an invalid or no input, the fists are assigned as the weapon
-                    print('Thats not in the bag! You will use your fists!')
-                    self.combat_item = fist
-                    break
+
+            if selected_weapon is None:
+                print("That's not in the bag! You will use your fists!")
+                self.combat_item = fist
+            elif isinstance(selected_weapon, Food):
+                print("You cannot fight with food! You will use your fists!")
+                self.combat_item = fist
+            else:
+                self.combat_item = selected_weapon
+                print(f'You have chosen {self.combat_item.name}')
 
             # ---------- PLAYER TURN ----------
             if self.combat_item: # if the player has a weapon

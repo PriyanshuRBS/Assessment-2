@@ -36,6 +36,7 @@ What's your command? > take""", 3)
     time_text_spacer("This also applies for comannds such as",1)
     time_text('[talk] - a command entered to talk to the person in the room',1)
     time_text('[eat] - a command entered to eat food you have picked up',1)
+    time_text('[inventory] - a command entered to check what you have in your bag',1)
     time_text_spacer("Anything in the square brackets will be a command",2)
 
 
