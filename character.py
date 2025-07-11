@@ -57,7 +57,7 @@ class Enemy(Character):
                 if isinstance(item, Weapon):
                     print(item.name)
                     weapon_items.append(item)
-
+            print('If you have no weapon, or want to use your fists, leave the space empty and press enter')
             choice = input('> ')
 
             selected_weapon = None
@@ -69,6 +69,7 @@ class Enemy(Character):
             if selected_weapon is None:
                 print("That's not in the bag! You will use your fists!")
                 self.combat_item = fist
+                #just in case. though this line should never need to be used
             elif isinstance(selected_weapon, Food):
                 print("You cannot fight with food! You will use your fists!")
                 self.combat_item = fist
@@ -87,7 +88,7 @@ class Enemy(Character):
                     if chance == 1:
                         print('You did a critical hit!')
                         self.combat_item.durability -= 15
-                        dmg = self.combat_item.damage + strength + strength/2
+                        dmg = self.combat_item.damage + strength + self.combat_item.damage/3
                     else:
                         self.combat_item.durability -= 15
                         dmg = self.combat_item.damage + strength 
