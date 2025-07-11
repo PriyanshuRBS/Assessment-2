@@ -197,8 +197,9 @@ dungeon.set_item(curry_recipe)
 
 
 #where the game runs
-health = 0
+health = 0        #health variables that will be assigned different values based on selected skillset
 health_max = 0
+#introduction
 time_text_spacer("Hello!",1.5)
 time_text_spacer("welcome to...", 1.5)
 banner_generator_v2('Stealth & Spice') 
@@ -206,6 +207,7 @@ time.sleep(1.5)
 time_text_spacer("         An Adventure For Heritage",2)
 time_text_spacer(' ', 0.5)
 time.sleep(2)
+#if the user wants to save time they can skip instructions
 instructions_question = input("Would you like to go through how to play the game? (type [y] for yes and [n] for no) > ")
 if instructions_question == 'y':
     help()
@@ -215,6 +217,7 @@ else:
     time_text_spacer('Sounds close enough to yes', 1)
     help()
 
+#deciding skills
 time_text_spacer("Now let's descide your skills", 2)
 time_text('[1] -> Fast healing - More health, more healing, less damage', 2)
 time_text('[2] -> Increased Strength - Less health, less healing, double damage', 1)
@@ -222,7 +225,7 @@ time_text('[2] -> Increased Strength - Less health, less healing, double damage'
 #asking for skill
 skill = input(" What's Your Command? > ")
 if skill.lower() == '1':
-    health = 150
+    health = 150         #values are assigned 
     health_max = 150
     heal_rate = 10
     strength = 10
@@ -233,8 +236,8 @@ elif skill.lower() == '2':
     heal_rate = 5
     strength = 15
 else:
-    time_text('You have no skill since you did not give a valid input!',4)
-    health = 100
+    time_text('You have no skill since you did not give a valid input!',4) #no skill so they have these values, hard to finish game with them though
+    health = 100    
     health_max = 100
     heal_rate = 5
     strength = 5
@@ -246,6 +249,7 @@ time_text_spacer('You begin in your room...', 2)
 
 
 #the loop where the game runs
+#creating some variables for the game
 current_room = home
 possible_directions = ['north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest']
 heal_rate = 5
@@ -260,15 +264,17 @@ armory_key = False
 completion_key = False
 last_rooms = []
 
+#main while loop of the game
 while dead == False:
+    #game talks to player at certain events
     if completion_key == True and current_room == dungeon:
-        print("""
+        time_text_spacer("""
 [Game says]:
-    Go through the old tunnel and then go east until you reach home, the castle is collapsing""")
+    Go through the old tunnel and then go east until you reach home, the castle is collapsing""", 1)
     elif completion_key == True and current_room == home:
-                print("""
+                time_text_spacer("""
 [Game says]:
-    talk to your mother to finish the game""")
+    talk to your mother to finish the game""",1)
 
 
 
