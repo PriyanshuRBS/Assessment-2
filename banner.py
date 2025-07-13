@@ -18,9 +18,9 @@ def banner_generator_v2(text):
     #creating the pattern for the upper and lower line. There will be stars on the corners and lines between then
     upperandlowerline = '|'+'-'*(len(bannertext) + 12)+'|'
     #printing the stuff
-    print(upperandlowerline) 
+    print(upperandlowerline)  #double upper line 
     print(upperandlowerline) 
     print(f"|----  {bannertext}  ----|") 
-    print(upperandlowerline) 
+    print(upperandlowerline)  #double lower line
     print(upperandlowerline)
 

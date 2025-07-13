@@ -24,10 +24,11 @@ class Room():
     #set the name of the Room
     def set_name(self, new_name):
         self.name = new_name
-
+#set character
     def set_character(self, character):
         self.characters = character
 
+    #return character
     def get_character(self):
         return self.characters
 

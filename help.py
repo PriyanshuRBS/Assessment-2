@@ -1,5 +1,5 @@
 from timespacer import time_text, time_text_spacer
-
+#function where help happens
 def help():
     time_text_spacer('There are some important things you need to learn',2)
     time_text('First of all,',1.5)
@@ -37,7 +37,7 @@ What's your command? > take""", 3)
     time_text('[talk] - a command entered to talk to the person in the room',1)
     time_text('[eat] - a command entered to eat food you have picked up',1)
     time_text('[inventory] - a command entered to check what you have in your bag',1)
-    time_text('[health] - a command entered to check your health')
+    time_text('[health] - a command entered to check your health',1)
     time_text_spacer("Anything in the square brackets will be a command",2)
 
 

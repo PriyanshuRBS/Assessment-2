@@ -63,7 +63,7 @@ class Enemy(Character):
             selected_weapon = None
             for weapon in weapon_items:
                 if weapon.name.lower() == choice.lower():
-                    selected_weapon = weapon
+                    selected_weapon = weapon #weapon is set
                     break
 
             if selected_weapon is None:

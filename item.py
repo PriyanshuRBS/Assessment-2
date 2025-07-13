@@ -28,7 +28,7 @@ class Weapon(Item):
         self.damage = damage
 
     def durability_check(self):
-        if self.durability <= 0:
+        if self.durability <= 0:  #returns true if item is now broken
             return True
         else:
             return False
@@ -37,6 +37,6 @@ class Food(Item):
 
     def __init__(self, name, description, healing):
         super().__init__(name, description)
-        self.healing = healing
+        self.healing = healing #how much it heals
 
         

@@ -448,6 +448,6 @@ You Have Succeeded Jarad! Your name will be celebrated for centuries in our vill
         time.sleep(0.3)
 
     if current_room == home and completion_key == True and hastalked == True:
-        banner_generator_v2('The')
+        banner_generator_v2('The') #end of the game
         banner_generator_v2('End')
         break
