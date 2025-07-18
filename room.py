@@ -3,7 +3,7 @@ class Room():
         self.name = room_name
         self.description = None
         self.linked_rooms = {}
-        self.characters = None
+        self.character = None
         self.item = None
 
     #get the desrciption of the room
@@ -26,11 +26,11 @@ class Room():
         self.name = new_name
 #set character
     def set_character(self, character):
-        self.characters = character
+        self.character = character
 
     #return character
     def get_character(self):
-        return self.characters
+        return self.character   
 
     def get_item(self):
         return self.item

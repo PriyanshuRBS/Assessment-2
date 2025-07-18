@@ -30,14 +30,14 @@ A place in the centre of the village, lively with people
 The home is east. Enter [east] to go there
 The Road 1 is west. Enter [west] to go there
 Village Leader is here!
-He's the leader of the village, running things and giving people tasks
-the [Wooden Sword] is here - It's a weak little blade, but it gets the job done!
+He's the leader of the village, running things and giving people tasks. You should talk to him
+the [Wooden Sword] is here - It's a weak little blade, but it gets the job done! enter [take] to take ths item
 What's your command? > take""", 3)
     time_text_spacer("This also applies for comannds such as",1)
     time_text('[talk] - a command entered to talk to the person in the room',1)
     time_text('[eat] - a command entered to eat food you have picked up',1)
     time_text('[inventory] - a command entered to check what you have in your bag',1)
-    time_text('[health] - a command entered to check your health',1)
+    time_text('[health] - a command entered to check your health',1 )
     time_text_spacer("Anything in the square brackets will be a command",2)
 
 
