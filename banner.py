@@ -23,4 +23,3 @@ def banner_generator_v2(text):
     print(f"|----  {bannertext}  ----|") 
     print(upperandlowerline)  #double lower line
     print(upperandlowerline)
-

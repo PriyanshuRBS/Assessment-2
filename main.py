@@ -8,7 +8,7 @@ from help import help
 
 
 #creating the different rooms
-home = Room('home')
+home = Room('Home')
 home.set_description("Your home with a big sign that says Jarad's home")
 
 town_hall = Room('Town Hall')
