@@ -1,6 +1,6 @@
 from timespacer import time_text, time_text_spacer
 #function where help happens
-def help():
+def tutorial():
     time_text_spacer('There are some important things you need to learn',2)
     time_text('First of all,',1.5)
     time_text('To move around places', 1)
@@ -47,3 +47,20 @@ What's your command? > take""", 3)
     time_text_spacer('But has a 1 in 3 chance of doing a critical hit', 2)
     
     time_text_spacer('Remember at any time you can look at this again by entering [help] in the command line', 3)
+
+def help():
+    command = input("Enter [t] for full tutorial [c] for a list of commands > ")
+    if command.lower() == 't':
+        tutorial()
+    elif command.lower() == 'c':
+        time_text_spacer("The list of commands are",1)
+        time_text('[east] or [west] etc. - a command entered to move rooms',1)
+        time_text('[take] - a command entered to take an item in a room',1)
+        time_text('[talk] - a command entered to talk to the person in the room',1)
+        time_text('[eat] - a command entered to eat food you have picked up',1)
+        time_text('[inventory] - a command entered to check what you have in your bag',1)
+        time_text('[health] - a command entered to check your health',1 )
+        time_text_spacer("Anything in the square brackets will be a command",2)
+    else:
+        print('sounds like you need a tutorial!')
+        tutorial()

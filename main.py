@@ -4,7 +4,7 @@ from item import Item, Weapon, Food
 from banner import banner_generator, banner_generator_v2
 from timespacer import time_text, time_text_spacer
 import time
-from help import help
+from help import tutorial, help
 
 
 #creating the different rooms
@@ -23,25 +23,25 @@ hut.set_description('A small wooden hut dimly lit by a candle')
 road_2 = Room('Road 2')
 road_2.set_description('The paved road between the hut and the castle')
 
-entrance = Room('The Entrance')
+entrance = Room('Entrance')
 entrance.set_description('The grand entrance to the castle, with diamond, gold and silver')
 
-hallway = Room('The Hallway')
+hallway = Room('Hallway')
 hallway.set_description('A beautiful hallway, walls made of marble and lined with diamonds and emeralds, a sight to see')
 
-armory = Room('The Armory')
+armory = Room('Armory')
 armory.set_description('A room made to store weapons, but its almost empty?')
 
-kitchen = Room('The Kitchen')
+kitchen = Room('Kitchen')
 kitchen.set_description('A kitchen with a marble table, a window with a gold frame')
 
-great_hall = Room('The Great Hall')
+great_hall = Room('Great Hall')
 great_hall.set_description('A very large hall with shiny marble, gold, flowing lava from the walls, glowing gold, shiny silver, and platinum')
 
-dungeon = Room('The Dungeon')
+dungeon = Room('Dungeon')
 dungeon.set_description('An old dusty cave, with prisons and a box half open')
 
-old_tunnel = Room('An Old Tunnel')
+old_tunnel = Room('Old Tunnel')
 old_tunnel.set_description('Some secret passage with light at the end')
 # a room where dead characters are stored
 storage = Room('Storage')
@@ -54,7 +54,7 @@ wooden_sword = Weapon('Wooden Sword', "It's a weak little blade, but it gets the
 
 iron_sword = Weapon('Iron Sword',"A sleek shiny blade that does its job very well", 60, 20)
 
-enchanted_sword = Weapon('Enchanted Sword', 'The heavenly blade, blessed by divine power, with extreme power', 100, 40)
+enchanted_sword = Weapon('Enchanted Sword', 'The heavenly blade, blessed by divine power', 100, 40)
 
 zoogar_berry = Food('Zoogar Berry', "It's a magical berry that gives you alot of health",100)
 
@@ -91,7 +91,7 @@ apparition = Enemy('Apparition', 'Some weird apparition in the tunnel that seems
 
 #setting speeches for the characters
 mother.set_conversation("""
-Hey son! today is your big day! head to the town hall as fast you can!, and take this sandwich with you!""")
+Hey son! today is your big day! Head to the town hall as fast you can! And take this sandwich with you!""")
 
 village_leader.set_conversation("""
 Hello Jarad. Ive known you since you were born and i know that this mission is perfect for you. I have chosen you to complete a mission, a daring and difficult one,
@@ -201,7 +201,7 @@ health = 0        #health variables that will be assigned different values based
 health_max = 0
 #introduction
 time_text_spacer("Hello!",1.5)
-time_text_spacer("welcome to...", 1.5)
+time_text_spacer("Welcome to...", 1.5)
 banner_generator_v2('Stealth & Spice') 
 time.sleep(1.5)
 time_text_spacer("         An Adventure For Heritage",2)
