@@ -2,6 +2,7 @@ import time
 from item import Item, Food, Weapon
 from banner import banner_generator
 import random
+from clear_screen import clear_screen
 
 class Character():
     def __init__(self, char_name, char_description):
@@ -27,7 +28,9 @@ class Character():
     
     def talk(self):
         if self.conversation is not None:
-            input("[" + self.name + " says]: " + self.conversation + "    press [enter] when you are done reading")
+            print("[" + self.name + " says]: " + self.conversation)
+            input('Press the [enter] key when you are done reading')
+            clear_screen()
         else:
             print(self.name + " doesn't want to talk to you")
     
@@ -51,35 +54,37 @@ class Enemy(Character):
     #bringing in values needed
     def fight(self, player_health, dead_flag, current_room, bag, strength, fist):
         while self.health > 0 and player_health > 0:
-            print('What will you fight with? You have: ')
-            weapon_items = []
-            for item in bag:
-                if isinstance(item, Weapon):
-                    print(item.name)
-                    weapon_items.append(item)
-            print('If you have no weapon, or want to use your fists, leave the space empty and press enter')
-            choice = input('> ')
+            if self.combat_item is None:
+                clear_screen()
+                print('What will you fight with? You have: ')
+                weapon_items = []
+                for item in bag:
+                    if isinstance(item, Weapon):
+                        print(item.name)
+                        weapon_items.append(item)
+                print('If you have no weapon, or want to use your fists, leave the space empty and press enter')
+                choice = input('> ')
 
-            selected_weapon = None
-            for weapon in weapon_items:
-                if weapon.name.lower() == choice.lower():
-                    selected_weapon = weapon #weapon is set
-                    break
+                selected_weapon = None
+                for weapon in weapon_items:
+                    if weapon.name.lower() == choice.lower():
+                        selected_weapon = weapon #weapon is set
+                        break
 
-            if selected_weapon is None:
-                print("That's not in the bag! You will use your fists!")
-                self.combat_item = fist
-                #just in case. though this line should never need to be used
-            elif isinstance(selected_weapon, Food):
-                print("You cannot fight with food! You will use your fists!")
-                self.combat_item = fist
-            else:
-                self.combat_item = selected_weapon
-                print(f'You have chosen {self.combat_item.name}')
+                if selected_weapon is None:
+                    print(" You will use your fists to fight!")
+                    self.combat_item = fist
+                    #just in case. though this line should never need to be used
+                elif isinstance(selected_weapon, Food):
+                    print("You cannot fight with food! You will use your fists!")
+                    self.combat_item = fist
+                else:
+                    self.combat_item = selected_weapon
+                    print(f'You have chosen {self.combat_item.name}')
 
             # ---------- PLAYER TURN ----------
             if self.combat_item: # if the player has a weapon
-                print(' ')
+                clear_screen()
                 choice = input("Strong [s]  or  weak [w] > ").strip().lower()
                 time.sleep(0.1)
 
@@ -108,6 +113,7 @@ class Enemy(Character):
                     print(f"{self.combat_item.name} has broken!")
                     if self.combat_item in bag:
                         bag.remove(self.combat_item)
+                        self.combat_item = None
                     else:
                         print('If we got here there is an error')
 

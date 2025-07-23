@@ -4,6 +4,7 @@ from item import Item, Weapon, Food
 from banner import banner_generator, banner_generator_v2
 from timespacer import time_text, time_text_spacer
 import time
+from clear_screen import clear_screen
 from help import tutorial, help
 
 
@@ -208,6 +209,7 @@ time_text_spacer("         An Adventure For Heritage",2)
 time_text_spacer(' ', 0.5)
 time.sleep(2)
 #if the user wants to save time they can skip instructions
+clear_screen()
 instructions_question = input("Would you like to go through how to play the game? (type [y] for yes and [n] for no) > ")
 if instructions_question == 'y':
     help()
@@ -217,6 +219,7 @@ else:
     time_text_spacer('Sounds close enough to yes', 1)
     help()
 
+clear_screen()
 #deciding skills
 time_text_spacer("Now let's descide your skills", 2)
 time_text('[1] -> Fast healing - More health, more healing, less damage', 2)
@@ -242,11 +245,11 @@ else:
     heal_rate = 5
     strength = 5
 time_text_spacer(f"You have {health}HP, {heal_rate}HP healing rate and {strength} strength", 2)
-time_text_spacer('Your name is Jarad', 1)
 time_text("Entering the game...", 1.5)
+time_text('Your name is Jarad', 1)
 
 time_text_spacer('You begin in your room...', 2)
-
+clear_screen()
 
 #the loop where the game runs
 #creating some variables for the game
@@ -266,6 +269,7 @@ last_rooms = []
 
 #main while loop of the game
 while dead == False:
+    clear_screen()
     #game talks to player at certain events
     if completion_key == True and current_room == dungeon:
         time_text_spacer("""
@@ -277,8 +281,6 @@ while dead == False:
     talk to your mother to finish the game""",1)
 
 
-
-    print('\n')
     time_text("WELCOME TO: ", 0.2)
     current_room.describe()
     time.sleep(0.1)
@@ -354,7 +356,9 @@ while dead == False:
         hastalked = True
         # Talking to the inhabitant, if there is one
         if inhabitant is not None:
+            clear_screen()
             inhabitant.talk()
+            
 
 
     elif command.lower() == "fight":
@@ -370,7 +374,7 @@ while dead == False:
     elif command.lower() == 'take':
         if item is not None:
             bag.append(item)
-            print(f'You put {item.name} in your bag')
+            time_text(f'You put {item.name} in your bag', 2)
             current_room.item = None
             if item == curry_recipe:
                 completion_key = True
@@ -392,6 +396,7 @@ You Have Succeeded Jarad! Your name will be celebrated for centuries in our vill
         print(f"You currently have {health}HP")
 
     elif command.lower() == "eat":
+        clear_screen()
         print('You have:')
         food_items = []
         for item in bag:

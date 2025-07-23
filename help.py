@@ -60,6 +60,7 @@ def help():
         time_text('[eat] - a command entered to eat food you have picked up',1)
         time_text('[inventory] - a command entered to check what you have in your bag',1)
         time_text('[health] - a command entered to check your health',1 )
+        time_text('[help] - a command entered to open the help menu',1 )     
         time_text_spacer("Anything in the square brackets will be a command",2)
     else:
         print('sounds like you need a tutorial!')

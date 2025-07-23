@@ -8,7 +8,7 @@ class Room():
 
     #get the desrciption of the room
     def describe(self):
-        print(f"{self.name} \n {self.description}")
+        print(f"{self.name} \n{self.description}")
 
     #set the description of the room
     def set_description(self, room_description):
