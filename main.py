@@ -92,7 +92,7 @@ apparition = Enemy('Apparition', 'Some weird apparition in the tunnel that seems
 
 #setting speeches for the characters
 mother.set_conversation("""
-Hey son! today is your big day! Head to the town hall as fast you can! And take this sandwich with you!""")
+Hey son! today is your big day! Head to the town hall as fast you can! And take the sandwich I made with you just in case you get hungry.""")
 
 village_leader.set_conversation("""
 Hello Jarad. Ive known you since you were born and i know that this mission is perfect for you. I have chosen you to complete a mission, a daring and difficult one,
@@ -201,6 +201,7 @@ dungeon.set_item(curry_recipe)
 health = 0        #health variables that will be assigned different values based on selected skillset
 health_max = 0
 #introduction
+clear_screen()
 time_text_spacer("Hello!",1.5)
 time_text_spacer("Welcome to...", 1.5)
 banner_generator_v2('Stealth & Spice') 
@@ -214,15 +215,15 @@ instructions_question = input("Would you like to go through how to play the game
 if instructions_question == 'y':
     help()
 elif instructions_question =='n':
-    time_text_spacer('Alright, but remember you can eneter [help] in the command line to see the instructions', 2)
+    time_text_spacer('Alright, but remember you can eneter [help] in the command line to see the instructions', 3)
 else:
     time_text_spacer('Sounds close enough to yes', 1)
     help()
 
 clear_screen()
 #deciding skills
-time_text_spacer("Now let's descide your skills", 2)
-time_text('[1] -> Fast healing - More health, more healing, less damage', 2)
+time_text_spacer("Now let's descide your skills", 1.5)
+time_text('[1] -> Fast healing - More health, more healing, less damage', 1.2)
 time_text('[2] -> Increased Strength - Less health, less healing, double damage', 1)
 
 #asking for skill
@@ -289,7 +290,7 @@ while dead == False:
     inhabitant = current_room.get_character()
     time.sleep(0.1)
     item = current_room.get_item()
-    time.sleep(0.1)
+ 
 
     if inhabitant is not None:
         inhabitant.describe()
@@ -356,7 +357,7 @@ while dead == False:
         hastalked = True
         # Talking to the inhabitant, if there is one
         if inhabitant is not None:
-            clear_screen()
+            clear_screen()  
             inhabitant.talk()
             
 

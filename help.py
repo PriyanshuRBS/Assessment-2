@@ -49,7 +49,7 @@ What's your command? > take""", 3)
     time_text_spacer('Remember at any time you can look at this again by entering [help] in the command line', 3)
 
 def help():
-    command = input("Enter [t] for full tutorial [c] for a list of commands > ")
+    command = input("Enter [t] for full tutorial or enter [c] for a list of commands > ")
     if command.lower() == 't':
         tutorial()
     elif command.lower() == 'c':
@@ -62,6 +62,7 @@ def help():
         time_text('[health] - a command entered to check your health',1 )
         time_text('[help] - a command entered to open the help menu',1 )     
         time_text_spacer("Anything in the square brackets will be a command",2)
+        input('Press [enter] to continue')
     else:
         print('sounds like you need a tutorial!')
         tutorial()

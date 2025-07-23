@@ -29,7 +29,7 @@ class Character():
     def talk(self):
         if self.conversation is not None:
             print("[" + self.name + " says]: " + self.conversation)
-            input('Press the [enter] key when you are done reading')
+            input('Press [enter] when you are done reading')
             clear_screen()
         else:
             print(self.name + " doesn't want to talk to you")
@@ -134,7 +134,7 @@ class Enemy(Character):
                 print(f"{self.name} hits you! -{self.hit_damage} HP")
                 player_health -= self.hit_damage
             print(f"You have {player_health} HP")
-            time.sleep(1)
+            time.sleep(3)
 
 
             if player_health == 0:
